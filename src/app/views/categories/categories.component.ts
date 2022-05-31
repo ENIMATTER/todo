@@ -9,9 +9,9 @@ import {Category} from "../../model/Category";
 })
 export class CategoriesComponent implements OnInit {
 
-  categories: Category[] | undefined;
+  categories: Category[];
 
-  selectedCategory: Category | undefined;
+  selectedCategory: Category;
 
   constructor(private dataHandler: DataHandlerService) {
   }
