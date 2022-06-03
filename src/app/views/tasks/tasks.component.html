@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-header card-header-warning">
-    <h2 class="card-title">Список задач</h2>
+    <h4 class="card-title">Список задач</h4>
   </div>
-  <div class="card-body table-responsive" *ngIf="tasks.length > 0">
+  <div *ngIf="tasks && tasks.length > 0" class="card-body table-responsive">
 
     <table [dataSource]="dataSource" mat-table matSort>
 
@@ -12,7 +12,6 @@
         <td *matCellDef="let task" [style.background-color]="getPriorityColor(task)" class="col-color"
             mat-cell></td>
       </ng-container>
-
 
       <!-- нумерация-->
       <ng-container matColumnDef="id">
@@ -28,7 +27,10 @@
       <!-- название задачи-->
       <ng-container matColumnDef="title">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Название</th>
-        <td *matCellDef="let task" [class.completed]="task.completed" class="col-title" mat-cell>
+        <td *matCellDef="let task" [class.completed]="task.completed" class="col-title pointer" mat-cell
+            (click)="onClickTask(task)"
+
+        >
 
           {{task.title}}
 
@@ -38,7 +40,8 @@
       <!--дата выполнения-->
       <ng-container matColumnDef="date">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Срок</th>
-        <td *matCellDef="let task" [ngClass]="{'completed': task.completed, 'novalue': task.date == null}"
+        <td *matCellDef="let task"
+            [ngClass]="{'completed': task.completed, 'novalue': task.date == null}"
             class="col-date"
             mat-cell>
 
@@ -65,7 +68,7 @@
       <ng-container matColumnDef="category">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Категория</th>
         <td *matCellDef="let task" class="col-category"
-            [ngClass]="{'completed': task.completed, 'novalue': task.category == null, 'link': !task.completed && task.category}"
+            [ngClass]="{'completed': task.completed, 'novalue': task.category == null}"
             mat-cell
         >
 
@@ -85,7 +88,9 @@
 
     <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 
+
   </div>
 
-  <div *ngIf="tasks.length == 0"><p class  = "not-found"> Ничего не найдено </p></div>
+  <div *ngIf="tasks && tasks.length == 0"><p class="not-found">Ничего не найдено</p></div>
+
 </div>
