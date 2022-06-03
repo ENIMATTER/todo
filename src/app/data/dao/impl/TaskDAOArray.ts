@@ -64,9 +64,11 @@ export class TaskDAOArray implements TaskDAO {
     return allTasks; // отфильтрованный массив
   }
 
-  update(T: Task): Observable<Task> {
+  update(task: Task): Observable<Task> {
+    const taskTmp = TestData.tasks.find(t => t.id === task.id);
     // @ts-ignore
-    return undefined;
+    TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, task);
+    return of(task);
   }
 
   getCompletedCount(): Observable<number> {
