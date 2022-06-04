@@ -20,7 +20,6 @@ export class CategoryDAOArray implements CategoryDAO{
   }
 
   getAll(): Observable<Category[]> {
-    // @ts-ignore
     return of(TestData.categories);
   }
 
