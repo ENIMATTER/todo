@@ -60,4 +60,18 @@ export class AppComponent implements OnInit {
       });
     })
   }
+
+  onDeleteTask(task: Task) {
+    this.dataHandler.deleteTask(task.id).subscribe( () => {
+      this.dataHandler.searchTasks(
+        this.selectedCategory,
+        // @ts-ignore
+        null,
+        null,
+        null
+      ).subscribe(tasks => {
+        this.tasks = tasks;
+      });
+    })
+  }
 }
