@@ -34,3 +34,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .green{
   color: green;
 }
+
+.link{
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -11,7 +11,8 @@
       #inputTitle
       matInput
 
-      [(ngModel)]="tmpTitle">
+      [(ngModel)]="tmpTitle"
+      (keydown.enter)="onConfirm()">
 
     <button
       *ngIf="tmpTitle.trim().length > 0"
@@ -110,14 +111,14 @@
       mat-button class="green"
       *ngIf="!task.completed"
       (click)="complete()">
-      Завершить задачу
+      Завершить
     </button>
 
     <button
       mat-button class="green"
       (click)="activate()"
       *ngIf="task.completed">
-      Активировать задачу
+      Активировать
     </button>
 
     <button

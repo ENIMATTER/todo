@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header card-header-warning">
-    <h4 class="card-title">Список задач</h4>
+    <h2 class="card-title">Список задач</h2>
   </div>
   <div *ngIf="tasks && tasks.length > 0" class="card-body table-responsive">
 
@@ -62,11 +62,44 @@
       <ng-container matColumnDef="category">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Категория</th>
         <td *matCellDef="let task" class="col-category"
-            [ngClass]="{'completed': task.completed, 'novalue': task.category == null}"
-            mat-cell
-        >
+            [ngClass]="{'completed': task.completed, 'novalue': task.category == null, 'link': !task.completed && task.category}"
 
+            (click)="!task.completed && task.category && onSelectCategory(task.category)"
+            mat-cell>
           {{task.category ? task.category.title : "Без категории"}}
+        </td>
+      </ng-container>
+
+      <!--доступные действия над задачей-->
+      <ng-container matColumnDef="operations">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td class="col-operations" mat-cell *matCellDef="let task" [class.completed]="task.completed">
+
+          <button mat-icon-button (click)="openDeleteDialog(task)"
+                  class="delete-icon">
+            <mat-icon aria-hidden="false">delete</mat-icon>
+          </button>
+
+          <button mat-icon-button (click)="openEditTaskDialog(task)"
+                  class="edit-icon">
+            <mat-icon aria-hidden="false">edit</mat-icon>
+          </button>
+
+        </td>
+      </ng-container>
+
+      <!--галочка для выполнения/активации задачи-->
+      <ng-container matColumnDef="select">
+
+        <th mat-header-cell *matHeaderCellDef></th>
+
+        <td class="col-select text-right" mat-cell *matCellDef="let task">
+
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? onToggleStatus(task) : null"
+            [checked]="task.completed">
+          </mat-checkbox>
 
         </td>
       </ng-container>
@@ -85,6 +118,6 @@
 
   </div>
 
-  <div *ngIf="tasks && tasks.length == 0"><p class="not-found">Ничего не найдено</p></div>
+  <div *ngIf="tasks && tasks.length == 0"><p class="not-found"><br>Ничего не найдено</p></div>
 
 </div>
