@@ -4,8 +4,8 @@ import {Task} from 'src/app/model/Task';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {MatDialog} from "@angular/material/dialog";
 import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-tasks',
@@ -14,6 +14,7 @@ import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-d
 })
 export class TasksComponent implements OnInit {
 
+
   // поля для таблицы (те, что отображают данные из задачи - должны совпадать с названиями переменных класса)
   displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category'];
   dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
@@ -21,6 +22,14 @@ export class TasksComponent implements OnInit {
   // ссылки на компоненты таблицы
   @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) private sort: MatSort;
+
+
+  @Output()
+  deleteTask = new EventEmitter<Task>();
+
+  @Output()
+  updateTask = new EventEmitter<Task>();
+
 
   tasks: Task[];
 
@@ -31,24 +40,18 @@ export class TasksComponent implements OnInit {
     this.fillTable();
   }
 
-  @Output()
-  deleteTask = new EventEmitter<Task>();
+  constructor(
+    private dataHandler: DataHandlerService, // доступ к данным
+    private dialog: MatDialog, // работа с диалоговым окном
 
-  @Output()
-  updateTask = new EventEmitter<Task>();
-
-  constructor(private dataHandler: DataHandlerService, private dialog: MatDialog) {
+  ) {
   }
 
   ngOnInit() {
+
     // датасорс обязательно нужно создавать для таблицы, в него присваивается любой источник (БД, массивы, JSON и пр.)
     this.dataSource = new MatTableDataSource();
     this.fillTable(); // заполняем таблицы данными (задачи) и всеми метаданными
-  }
-
-
-  toggleTaskCompleted(task: Task) {
-    task.completed = !task.completed;
   }
 
   // в зависимости от статуса задачи - вернуть цвет названия
@@ -68,7 +71,7 @@ export class TasksComponent implements OnInit {
   }
 
   // показывает задачи с применением всех текущий условий (категория, поиск, фильтры и пр.)
-  private fillTable(): void {
+  fillTable(): void {
 
     if (!this.dataSource) {
       return;
@@ -77,6 +80,7 @@ export class TasksComponent implements OnInit {
     this.dataSource.data = this.tasks; // обновить источник данных (т.к. данные массива tasks обновились)
 
     this.addTableObjects();
+
 
     // когда получаем новые данные..
     // чтобы можно было сортировать по столбцам "категория" и "приоритет", т.к. там не примитивные типы, а объекты
@@ -102,41 +106,44 @@ export class TasksComponent implements OnInit {
     };
   }
 
-  private addTableObjects(): void {
+  addTableObjects(): void {
     this.dataSource.sort = this.sort; // компонент для сортировки данных (если необходимо)
     this.dataSource.paginator = this.paginator; // обновить компонент постраничности (кол-во записей, страниц)
   }
 
+  // диалоговое редактирования для добавления задачи
   openEditTaskDialog(task: Task): void {
 
     // открытие диалогового окна
-    const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Редактирование задачи'], autoFocus: false});
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
+      data: [task, 'Редактирование задачи'],
+      autoFocus: false
+    });
 
-    dialogRef.afterClosed().subscribe(result =>{
-      //обработка результатов
+    dialogRef.afterClosed().subscribe(result => {
+      // обработка результатов
 
-      if(result === 'complete'){
-        task.completed = true;
+      if (result === 'complete') {
+        task.completed = true; // ставим статус задачи как выполненная
+        this.updateTask.emit(task);
+      }
+
+      if (result === 'activate') {
+        task.completed = false; // возвращаем статус задачи как невыполненная
         this.updateTask.emit(task);
         return;
       }
 
-      if(result === 'activate'){
-        task.completed = false;
-        this.updateTask.emit(task);
-        return;
-      }
-
-      if(result === 'delete'){
+      if (result === 'delete') {
         this.deleteTask.emit(task);
         return;
       }
 
-      if(result as Task){
+      if (result as Task) { // если нажали ОК и есть результат
         this.updateTask.emit(task);
         return;
       }
 
-    })
+    });
   }
 }
