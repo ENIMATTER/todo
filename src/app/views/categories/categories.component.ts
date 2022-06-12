@@ -17,7 +17,10 @@ export class CategoriesComponent implements OnInit {
   selectCategory = new EventEmitter<Category>();
 
   @Input()
-  selectedCategory: Category;
+  selectedCategory: Category | undefined;
+
+  @Input()
+  allTasks: null;
 
   constructor(private dataHandler: DataHandlerService) {
   }
@@ -26,7 +29,7 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
   }
 
-  showTasksByCategory(category: Category): void {
+  showTasksByCategory(category: Category | undefined): void {
 
     // если не изменилось значение, ничего не делать (чтобы лишний раз не делать запрос данных)
     if (this.selectedCategory === category) {
@@ -38,4 +41,5 @@ export class CategoriesComponent implements OnInit {
     // вызываем внешний обработчик и передаем туда выбранную категорию
     this.selectCategory.emit(this.selectedCategory);
   }
+
 }

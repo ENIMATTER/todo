@@ -5,13 +5,25 @@
       Категории
     </a>
   </div>
+
   <div class="sidebar-wrapper">
     <ul class="nav">
+
+      <li class="nav-item category"
+          (click)="showTasksByCategory(undefined)"
+          [class.active]="selectedCategory === undefined">
+
+        <a class="nav-link pointer">
+          <span class="all-category-title">Все</span>
+        </a>
+
+      </li>
+
+      <div class="line"></div>
+
       <li (click)="showTasksByCategory(category)"
           *ngFor="let category of categories" [class.active]="category === selectedCategory"
-
           class="nav-item pointer"
-
       >
         <a class="nav-link">
           <p>{{category.title}}</p>
@@ -20,4 +32,5 @@
 
     </ul>
   </div>
+
 </div>

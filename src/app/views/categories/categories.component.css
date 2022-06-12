@@ -1,3 +1,8 @@
 .pointer{
   cursor: pointer;
 }
+
+.all-category-title{
+  font-weight: bold;
+  font-size: 16px;
+}
