@@ -21,16 +21,33 @@
 
       <div class="line"></div>
 
-      <li (click)="showTasksByCategory(category)"
-          *ngFor="let category of categories" [class.active]="category === selectedCategory"
-          class="nav-item pointer"
+      <li
+        *ngFor="let category of categories; let index = index " [class.active]="category === selectedCategory"
+        (click)="showTasksByCategory(category)"
+        (mouseleave)="showEditIcon(undefined)"
+        (mouseenter)="showEditIcon(index)"
+        class="nav-item pointer"
       >
         <a class="nav-link">
-          <p>{{category.title}}</p>
+
+          <!--          название категории-->
+          <span class="category-title">{{category.title}}</span>
+
+          <!--         кнопка редактирования категории-->
+          <span class="edit-category-icon-area">
+
+            <mat-icon
+              *ngIf="indexMouseMove === index"
+              (click)="$event.stopPropagation(); openEditDialog(category)"
+
+              class="edit-category-icon"
+            >edit
+            </mat-icon>
+
+          </span>
         </a>
       </li>
 
     </ul>
   </div>
-
 </div>

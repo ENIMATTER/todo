@@ -5,4 +5,23 @@
 .all-category-title{
   font-weight: bold;
   font-size: 16px;
+  display: inline-block;
+  width: 85%;
+}
+
+.category-title{
+  font-size: 16px;
+  display: inline-block;
+  width: 70%;
+}
+
+.edit-category-icon-area{
+  font-size: 13px;
+  display: inline-block;
+  width: 15%;
+  text-align: left;
+}
+
+.edit-category-icon{
+  color: #dadada;
 }
