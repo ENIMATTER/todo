@@ -7,6 +7,7 @@ import {TestData} from "../../TestData";
 
 export class TaskDAOArray implements TaskDAO {
 
+
   getAll(): Observable<Task[]> {
     return of(TestData.tasks);
   }
@@ -17,17 +18,20 @@ export class TaskDAOArray implements TaskDAO {
   }
 
 
-  add(T: Task): Observable<Task> {
+  add(task: Task): Observable<Task> {
     // @ts-ignore
     return undefined;
   }
 
   delete(id: number): Observable<Task> {
-    const taskTmp = TestData.tasks.find(t => t.id === id);
+
+    const taskTmp = TestData.tasks.find(t => t.id === id); // удаляем по id
     // @ts-ignore
     TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1);
+
     // @ts-ignore
     return of(taskTmp);
+
   }
 
   getCompletedCountInCategory(category: Category): Observable<number> {
@@ -53,29 +57,51 @@ export class TaskDAOArray implements TaskDAO {
   // поиск задач по параметрам
   // если значение null - параметр не нужно учитывать при поиске
   search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
-    return of(this.searchTodos(category, searchText, status, priority));
+
+    return of(this.searchTasks(category, searchText, status, priority));
+
   }
 
-  private searchTodos(category: Category, searchText: string, status: boolean, priority: Priority): Task[] {
+  private searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Task[] {
 
     let allTasks = TestData.tasks;
 
-    if (category != null) {
-      allTasks = allTasks.filter(todo => todo.category === category);
+    // поочереди применяем все условия (какие не пустые)
+    if (status != null) {
+      allTasks = allTasks.filter(task => task.completed === status);
     }
 
-    return allTasks; // отфильтрованный массив
+    if (category != null) {
+      allTasks = allTasks.filter(task => task.category === category);
+    }
+
+    if (priority != null) {
+      allTasks = allTasks.filter(task => task.priority === priority);
+    }
+
+    if (searchText != null) {
+      allTasks = allTasks.filter(
+        task =>
+          task.title.toUpperCase().includes(searchText.toUpperCase()) // учитываем текст поиска (если '' - возвращаются все значения)
+      );
+    }
+
+    return allTasks;
   }
 
   update(task: Task): Observable<Task> {
-    const taskTmp = TestData.tasks.find(t => t.id === task.id);
+
+    const taskTmp = TestData.tasks.find(t => t.id === task.id); // обновляем по id
     // @ts-ignore
     TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, task);
+
     return of(task);
+
   }
 
   getCompletedCount(): Observable<number> {
     // @ts-ignore
     return undefined;
   }
+
 }

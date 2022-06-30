@@ -8,6 +8,7 @@ import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-d
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
 import {Category} from "../../model/Category";
+import {Priority} from "../../model/Priority";
 
 @Component({
   selector: 'app-tasks',
@@ -35,13 +36,33 @@ export class TasksComponent implements OnInit {
   @Output()
   selectCategory = new EventEmitter<Category>();
 
+  @Output()
+  filterByTitle = new EventEmitter<string>();
+
+  @Output()
+  filterByStatus = new EventEmitter<boolean>();
+
+  @Output()
+  filterByPriority = new EventEmitter<Priority>();
+
+  // поиск
+  searchTaskText: string; // текущее значение для поиска задач
+  selectedStatusFilter: boolean | undefined;   // по-умолчанию будут показываться задачи по всем статусам (решенные и нерешенные)
+  selectedPriorityFilter: Priority | undefined;
+
   tasks: Task[];
+  priorities: Priority[];
 
   // текущие задачи для отображения на странице
   @Input('tasks')
   set setTasks(tasks: Task[]) { // напрямую не присваиваем значения в переменную, только через @Input
     this.tasks = tasks;
     this.fillTable();
+  }
+
+  @Input('priorities')
+  set setPriorities(priorities: Priority[]) { // напрямую не присваиваем значения в переменную, только через @Input
+    this.priorities = priorities;
   }
 
   constructor(
@@ -173,4 +194,28 @@ export class TasksComponent implements OnInit {
   onSelectCategory(category: Category): void{
     this.selectCategory.emit(category);
   }
+
+  // фильтрация по названию
+  onFilterByTitle() {
+    this.filterByTitle.emit(this.searchTaskText);
+  }
+
+  // фильтрация по статусу
+  onFilterByStatus(value: boolean | undefined) {
+    // на всякий случай проверяем изменилось ли значение (хотя сам UI компонент должен это делать)
+    if (value !== this.selectedStatusFilter) {
+      this.selectedStatusFilter = value;
+      this.filterByStatus.emit(this.selectedStatusFilter);
+    }
+  }
+
+  onFilterByPriority(value: Priority | undefined) {
+
+    // на всякий случай проверяем изменилось ли значение (хотя сам UI компонент должен это делать)
+    if (value !== this.selectedPriorityFilter) {
+      this.selectedPriorityFilter = value;
+      this.filterByPriority.emit(this.selectedPriorityFilter);
+    }
+  }
+
 }
