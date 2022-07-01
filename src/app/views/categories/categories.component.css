@@ -1,52 +1,63 @@
-.pointer{
+.pointer {
   cursor: pointer;
 }
 
-.all-category-title{
-  font-weight: bold;
-  font-size: 16px;
-  display: inline-block;
-  width: 85%;
-}
-
-.category-title{
-  font-size: 16px;
-  display: inline-block;
-  width: 70%;
-}
-
-.edit-category-icon-area{
-  font-size: 13px;
-  display: inline-block;
+.edit-category-icon-area {
   width: 15%;
+  display: inline-block;
   text-align: left;
+  font-size: 13px
 }
 
-.edit-category-icon{
+.category-title {
+  width: 70%;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.all-category-title {
+  width: 85%;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.edit-category-icon {
   color: #dadada;
 }
 
-.nav-title{
+.add-icon {
+  cursor: pointer;
+  font-size: 25px;
+  vertical-align: middle;
+}
+
+span.add-icon-area {
+  width: 15%;
+  display: inline-block;
+  text-align: left;
+}
+
+#categories {
+  width: 100%;
+  overflow-x: hidden; /* чтобы не было гориз. прокрутки */
+}
+
+.nav-title {
   width: 85%;
   display: inline-block;
   font-size: 20px;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: middle
 }
 
-#categories{
-  width: 100%;
-  overflow-x: hidden;
+.search-category-area {
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f2f2f2;
+  border-radius: 6px
 }
 
-span.add-icon-area{
-  width: 15%;
-  display: inline-block;
-  text-align: left;
-}
-
-.add-icon{
-  cursor: pointer;
-  vertical-align: middle;
-  font-size: 25px;
+.search-category-button {
+  margin-left: 10px;
+  font-size: 25px
 }

@@ -11,20 +11,19 @@ import {Priority} from "./model/Priority";
 })
 export class AppComponent implements OnInit {
 
-  title = 'Todo';
   tasks: Task[];
-  categories: Category[];
-  priorities: Priority[];
+  categories: Category[]; // все категории
+  priorities: Priority[]; // все приоритеты
 
-  selectedCategory: Category;
+  selectedCategory: Category = null;
 
   // поиск
   private searchTaskText = ''; // текущее значение для поиска задач
+  private searchCategoryText = ''; // текущее значение для поиска категорий
 
   // фильтрация
-  private statusFilter: boolean;
-
   private priorityFilter: Priority;
+  private statusFilter: boolean;
 
   constructor(
     private dataHandler: DataHandlerService, // фасад для работы с данными
@@ -32,68 +31,45 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
     this.dataHandler.getAllPriorities().subscribe(priorities => this.priorities = priorities);
-
-    // @ts-ignore
+    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
     this.onSelectCategory(null); // показать все задачи
-
   }
+
 
   // изменение категории
   onSelectCategory(category: Category) {
-
     this.selectedCategory = category;
-
     this.updateTasks();
-
-  }
-
-  // обновление задачи
-  onUpdateTask(task: Task) {
-
-    this.dataHandler.updateTask(task).subscribe(() => {
-      this.dataHandler.searchTasks(
-        this.selectedCategory,
-        // @ts-ignore
-        null,
-        null,
-        null
-      ).subscribe(tasks => {
-        this.tasks = tasks;
-      });
-    });
-  }
-
-  // удаление задачи
-  onDeleteTask(task: Task) {
-
-    this.dataHandler.deleteTask(task.id).subscribe(() => {
-      this.dataHandler.searchTasks(
-        this.selectedCategory,
-        // @ts-ignore
-        null,
-        null,
-        null
-      ).subscribe(tasks => {
-        this.tasks = tasks;
-      });
-    });
   }
 
   // удаление категории
   onDeleteCategory(category: Category) {
     this.dataHandler.deleteCategory(category.id).subscribe(cat => {
-      // @ts-ignore
-      this.selectedCategory = undefined; // открываем категорию "Все"
-      this.onSelectCategory(this.selectedCategory);
+      this.selectedCategory = null; // открываем категорию "Все"
+      this.onSelectCategory(null);
     });
   }
 
   // обновлении категории
   onUpdateCategory(category: Category) {
     this.dataHandler.updateCategory(category).subscribe(() => {
-      this.onSelectCategory(this.selectedCategory);
+      this.onSearchCategory(this.searchCategoryText);
+    });
+  }
+
+  // обновление задачи
+  onUpdateTask(task: Task) {
+    this.dataHandler.updateTask(task).subscribe(cat => {
+      this.updateTasks()
+    });
+  }
+
+  // удаление задачи
+  onDeleteTask(task: Task) {
+
+    this.dataHandler.deleteTask(task.id).subscribe(cat => {
+      this.updateTasks()
     });
   }
 
@@ -109,6 +85,7 @@ export class AppComponent implements OnInit {
     this.updateTasks();
   }
 
+  // фильтрация задач по приоритету
   onFilterTasksByPriority(priority: Priority) {
     this.priorityFilter = priority;
     this.updateTasks();
@@ -125,17 +102,29 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onAddTask(task: Task){
-    this.dataHandler.addTask(task).subscribe(result=>{
+  // добавление задачи
+  onAddTask(task: Task) {
+    this.dataHandler.addTask(task).subscribe(result => {
       this.updateTasks();
-    })
+    });
   }
 
-  onAddCategory(title: string){
-    this.dataHandler.addCategory(title).subscribe(() => this.updateCategories())
+  // добавление категории
+  onAddCategory(title: string) {
+    this.dataHandler.addCategory(title).subscribe(() => this.updateCategories());
   }
 
-  private updateCategories(){
-    this.dataHandler.getAllCategories().subscribe( categories => this.categories = categories)
+  private updateCategories() {
+    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
+  }
+
+  // поиск категории
+  onSearchCategory(title: string) {
+
+    this.searchCategoryText = title;
+
+    this.dataHandler.searchCategories(title).subscribe(categories => {
+      this.categories = categories;
+    });
   }
 }

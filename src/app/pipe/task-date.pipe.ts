@@ -30,8 +30,6 @@ export class TaskDatePipe extends DatePipe implements PipeTransform {
       return 'Завтра';
     }
 
-    // @ts-ignore
     return new DatePipe('ru-RU').transform(date, format); // показывать дату в нужной локали
   }
-
 }

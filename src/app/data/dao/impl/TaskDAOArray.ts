@@ -13,60 +13,51 @@ export class TaskDAOArray implements TaskDAO {
   }
 
   get(id: number): Observable<Task> {
-    // @ts-ignore
     return undefined;
   }
 
-
   add(task: Task): Observable<Task> {
+
+    // если id пустой - генерируем его
     if (task.id === null || task.id === 0) {
       task.id = this.getLastIdTask();
     }
     TestData.tasks.push(task);
+
     return of(task);
   }
 
+  // находит последний id (чтобы потом вставить новую запись с id, увеличенным на 1) - в реальной БД это происходит автоматически
   private getLastIdTask(): number {
     return Math.max.apply(Math, TestData.tasks.map(task => task.id)) + 1;
   }
 
   delete(id: number): Observable<Task> {
-
     const taskTmp = TestData.tasks.find(t => t.id === id); // удаляем по id
-    // @ts-ignore
     TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1);
-
-    // @ts-ignore
     return of(taskTmp);
-
   }
 
   getCompletedCountInCategory(category: Category): Observable<number> {
-    // @ts-ignore
     return undefined;
   }
 
   getTotalCount(): Observable<number> {
-    // @ts-ignore
     return undefined;
   }
 
   getTotalCountInCategory(category: Category): Observable<number> {
-    // @ts-ignore
     return undefined;
   }
 
   getUncompletedCountInCategory(category: Category): Observable<number> {
-    // @ts-ignore
     return undefined;
   }
 
   // поиск задач по параметрам
   // если значение null - параметр не нужно учитывать при поиске
   search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
-
     return of(this.searchTasks(category, searchText, status, priority));
-
   }
 
   private searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Task[] {
@@ -97,18 +88,12 @@ export class TaskDAOArray implements TaskDAO {
   }
 
   update(task: Task): Observable<Task> {
-
     const taskTmp = TestData.tasks.find(t => t.id === task.id); // обновляем по id
-    // @ts-ignore
     TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, task);
-
     return of(task);
-
   }
 
   getCompletedCount(): Observable<number> {
-    // @ts-ignore
     return undefined;
   }
-
 }

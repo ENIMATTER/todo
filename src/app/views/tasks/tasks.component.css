@@ -24,7 +24,6 @@
   width: 10%;
 }
 
-
 .col-select {
   width: 3%;
 }
@@ -41,24 +40,24 @@
   width: 10% !important;
 }
 
-.delete-icon{
+.delete-icon {
   cursor: pointer;
   color: #ea6561;
-  font-size: 12px;
-  margin-left: 2px;
-  margin-right: 2px;
+  font-size: 18px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
-.edit-icon{
+.edit-icon {
   cursor: pointer;
   color: #9A9A9A;
-  font-size: 12px;
-  margin-left: 2px;
-  margin-right: 2px;
+  font-size: 18px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
-.mat-header-cell{
-  color: #9c27b0 !important;
+.mat-header-cell {
   font-size: 1.063rem;
+  color: #9c27b0 !important;
   font-weight: normal;
 }

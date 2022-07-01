@@ -15,14 +15,12 @@ export class CategoriesComponent implements OnInit {
   @Input()
   categories: Category[];
 
+  @Input()
+  selectedCategory: Category;
+
   // выбрали категорию из списка
   @Output()
   selectCategory = new EventEmitter<Category>();
-
-  @Input()
-  selectedCategory: Category | undefined;
-
-  indexMouseMove: number | undefined;
 
   // удалили категорию
   @Output()
@@ -32,20 +30,30 @@ export class CategoriesComponent implements OnInit {
   @Output()
   updateCategory = new EventEmitter<Category>();
 
+  // добавили категорию
   @Output()
-  addCategory = new EventEmitter<string>();
+  addCategory = new EventEmitter<string>(); // передаем только название новой категории
+
+  // поиск категории
+  @Output()
+  searchCategory = new EventEmitter<string>(); // передаем строку для поиска
+
+  // для отображения иконки редактирования при наведении на категорию
+  indexMouseMove: number;
+  searchCategoryTitle: string; // текущее значение для поиска категорий
 
   constructor(
     private dataHandler: DataHandlerService,
-    private dialog: MatDialog
+    private dialog: MatDialog, // внедряем MatDialog, чтобы работать с диалоговыми окнами
   ) {
   }
 
   // метод вызывается автоматически после инициализации компонента
   ngOnInit() {
+    // this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
   }
 
-  showTasksByCategory(category: Category | undefined): void {
+  showTasksByCategory(category: Category): void {
 
     // если не изменилось значение, ничего не делать (чтобы лишний раз не делать запрос данных)
     if (this.selectedCategory === category) {
@@ -59,8 +67,9 @@ export class CategoriesComponent implements OnInit {
   }
 
   // сохраняет индекс записи категории, над который в данный момент проходит мышка (и там отображается иконка редактирования)
-  showEditIcon(index: number | undefined) {
+  showEditIcon(index: number) {
     this.indexMouseMove = index;
+
   }
 
   // диалоговое окно для редактирования категории
@@ -79,7 +88,7 @@ export class CategoriesComponent implements OnInit {
         return;
       }
 
-      if (typeof (result) === 'string') { // нажали сохранить
+      if (result as string) { // нажали сохранить
         category.title = result as string;
 
         this.updateCategory.emit(category); // вызываем внешний обработчик
@@ -88,17 +97,26 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  openAddDialog(){
+  // диалоговое окно для добавления категории
+  openAddDialog() {
+
     const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
       data: ['', 'Добавление категории', OperType.ADD],
       width: '400px'
     });
 
-    dialogRef.afterClosed().subscribe(result=>{
-      if(result){
-        this.addCategory.emit(result as string);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addCategory.emit(result as string); // вызываем внешний обработчик
       }
-    })
+    });
   }
 
+  // поиск категории
+  search() {
+    if (this.searchCategoryTitle == null ) {
+      return;
+    }
+    this.searchCategory.emit(this.searchCategoryTitle);
+  }
 }

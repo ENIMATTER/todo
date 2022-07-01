@@ -4,8 +4,8 @@ import {Observable} from "rxjs";
 import {TaskDAOArray} from "../data/dao/impl/TaskDAOArray";
 import {Category} from "../model/Category";
 import {CategoryDAOArray} from "../data/dao/impl/CategoryDAOArray";
-import {PriorityDAOArray} from "../data/dao/impl/PriorityDAOArray";
 import {Priority} from "../model/Priority";
+import {PriorityDAOArray} from "../data/dao/impl/PriorityDAOArray";
 
 // класс реализовывает методы, которые нужны frontend'у, т.е. для удобной работы представлений
 // напоминает паттер Фасад (Facade) - выдает только то, что нужно для функционала
@@ -38,34 +38,37 @@ export class DataHandlerService {
     return this.priorityDaoArray.getAll();
   }
 
+  updateTask(task: Task): Observable<Task> {
+    return this.taskDaoArray.update(task);
+  }
+
   // поиск задач по параметрам
   searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
     return this.taskDaoArray.search(category, searchText, status, priority);
   }
 
-  updateTask(task: Task): Observable<Task>{
-    return this.taskDaoArray.update(task);
-  }
-
-  deleteTask(id: number): Observable<Task>{
+  deleteTask(id: number): Observable<Task> {
     return this.taskDaoArray.delete(id);
   }
 
-  updateCategory(category: Category): Observable<Category>{
+  updateCategory(category: Category): Observable<Category> {
     return this.categoryDaoArray.update(category);
   }
 
-  deleteCategory(id: number): Observable<Category>{
+  deleteCategory(id: number): Observable<Category> {
     return this.categoryDaoArray.delete(id);
   }
 
-  addTask(task: Task): Observable<Task>{
+  addTask(task: Task): Observable<Task> {
     return this.taskDaoArray.add(task);
   }
 
-  addCategory(title: string): Observable<Category>{
-    // @ts-ignore
+  addCategory(title: string): Observable<Category> {
     return this.categoryDaoArray.add(new Category(null, title));
+  }
+
+  searchCategories(title: string): Observable<Category[]> {
+    return this.categoryDaoArray.search(title);
   }
 
 }
