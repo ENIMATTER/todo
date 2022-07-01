@@ -5,6 +5,7 @@ import {Priority} from '../../model/Priority';
 import {Category} from '../../model/Category';
 import {DataHandlerService} from '../../service/data-handler.service';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import {OperType} from "../OperType";
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -17,7 +18,7 @@ export class EditTaskDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
-    @Inject(MAT_DIALOG_DATA) private data: [Task, string], // данные, которые передали в диалоговое окно
+    @Inject(MAT_DIALOG_DATA) private data: [Task, string, OperType], // данные, которые передали в диалоговое окно
     private dataHandler: DataHandlerService, // ссылка на сервис для работы с данными
     private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
   ) {
@@ -28,6 +29,8 @@ export class EditTaskDialogComponent implements OnInit {
 
   dialogTitle: string; // заголовок окна
   task: Task; // задача для редактирования/создания
+
+  operType: OperType;
 
   // сохраняем все значения в отдельные переменные
   // чтобы изменения не сказывались на самой задаче и можно было отменить изменения
@@ -41,7 +44,7 @@ export class EditTaskDialogComponent implements OnInit {
   ngOnInit() {
     this.task = this.data[0]; // задача для редактирования/создания
     this.dialogTitle = this.data[1]; // текст для диалогового окна
-
+    this.operType = this.data[2];
 
     // инициализация начальных значений (записывам в отдельные переменные
     // чтобы можно было отменить изменения, а то будут сразу записываться в задачу)
@@ -104,5 +107,13 @@ export class EditTaskDialogComponent implements OnInit {
   // делаем статус задачи "незавершенным" (активируем)
   activate() {
     this.dialogRef.close('activate');
+  }
+
+  canDelete(): boolean{
+    return this.operType === OperType.EDIT;
+  }
+
+  canActivateDeactivate(): boolean{
+    return this.operType === OperType.EDIT;
   }
 }

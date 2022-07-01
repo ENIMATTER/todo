@@ -25,3 +25,28 @@
 .edit-category-icon{
   color: #dadada;
 }
+
+.nav-title{
+  width: 85%;
+  display: inline-block;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#categories{
+  width: 100%;
+  overflow-x: hidden;
+}
+
+span.add-icon-area{
+  width: 15%;
+  display: inline-block;
+  text-align: left;
+}
+
+.add-icon{
+  cursor: pointer;
+  vertical-align: middle;
+  font-size: 25px;
+}

@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
 import {Category} from "../../model/Category";
 import {Priority} from "../../model/Priority";
+import {OperType} from "../../dialog/OperType";
 
 @Component({
   selector: 'app-tasks',
@@ -45,6 +46,9 @@ export class TasksComponent implements OnInit {
   @Output()
   filterByPriority = new EventEmitter<Priority>();
 
+  @Output()
+  addTask = new EventEmitter<Task>();
+
   // поиск
   searchTaskText: string; // текущее значение для поиска задач
   selectedStatusFilter: boolean | undefined;   // по-умолчанию будут показываться задачи по всем статусам (решенные и нерешенные)
@@ -64,6 +68,9 @@ export class TasksComponent implements OnInit {
   set setPriorities(priorities: Priority[]) { // напрямую не присваиваем значения в переменную, только через @Input
     this.priorities = priorities;
   }
+
+  @Input()
+  selectedCategory: Category;
 
   constructor(
     private dataHandler: DataHandlerService, // доступ к данным
@@ -141,7 +148,7 @@ export class TasksComponent implements OnInit {
 
     // открытие диалогового окна
     const dialogRef = this.dialog.open(EditTaskDialogComponent, {
-      data: [task, 'Редактирование задачи'],
+      data: [task, 'Редактирование задачи', OperType.EDIT],
       autoFocus: false
     });
 
@@ -216,6 +223,17 @@ export class TasksComponent implements OnInit {
       this.selectedPriorityFilter = value;
       this.filterByPriority.emit(this.selectedPriorityFilter);
     }
+  }
+
+  openAddTaskDialog(){
+    // @ts-ignore
+    const task = new Task(null, '', false, null, this.selectedCategory);
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Добавление задачи', OperType.ADD]});
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        this.addTask.emit(task);
+      }
+    })
   }
 
 }

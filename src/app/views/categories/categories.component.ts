@@ -3,6 +3,7 @@ import {DataHandlerService} from "../../service/data-handler.service";
 import {Category} from "../../model/Category";
 import {EditCategoryDialogComponent} from "../../dialog/edit-category-dialog/edit-category-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {OperType} from "../../dialog/OperType";
 
 @Component({
   selector: 'app-categories',
@@ -30,6 +31,9 @@ export class CategoriesComponent implements OnInit {
   // изменили категорию
   @Output()
   updateCategory = new EventEmitter<Category>();
+
+  @Output()
+  addCategory = new EventEmitter<string>();
 
   constructor(
     private dataHandler: DataHandlerService,
@@ -62,7 +66,7 @@ export class CategoriesComponent implements OnInit {
   // диалоговое окно для редактирования категории
   openEditDialog(category: Category) {
     const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
-      data: [category.title, 'Редактирование категории'],
+      data: [category.title, 'Редактирование категории', OperType.EDIT],
       width: '400px'
     });
 
@@ -82,6 +86,19 @@ export class CategoriesComponent implements OnInit {
         return;
       }
     });
+  }
+
+  openAddDialog(){
+    const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
+      data: ['', 'Добавление категории', OperType.ADD],
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        this.addCategory.emit(result as string);
+      }
+    })
   }
 
 }

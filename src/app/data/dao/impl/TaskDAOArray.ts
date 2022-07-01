@@ -19,8 +19,15 @@ export class TaskDAOArray implements TaskDAO {
 
 
   add(task: Task): Observable<Task> {
-    // @ts-ignore
-    return undefined;
+    if (task.id === null || task.id === 0) {
+      task.id = this.getLastIdTask();
+    }
+    TestData.tasks.push(task);
+    return of(task);
+  }
+
+  private getLastIdTask(): number {
+    return Math.max.apply(Math, TestData.tasks.map(task => task.id)) + 1;
   }
 
   delete(id: number): Observable<Task> {
