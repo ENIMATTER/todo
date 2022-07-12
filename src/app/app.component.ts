@@ -33,6 +33,8 @@ export class AppComponent implements OnInit {
 
   private uncompletedTotalTasksCount: number;
 
+  showStat: boolean = true;
+
   constructor(
     private dataHandler: DataHandlerService, // фасад для работы с данными
   ) {
@@ -161,4 +163,9 @@ export class AppComponent implements OnInit {
         this.uncompletedTotalTasksCount = array[3]; // нужно для категории Все
       });
   }
+
+  toggleStat(showStat: boolean){
+    this.showStat = showStat;
+  }
+
 }
