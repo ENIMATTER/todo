@@ -1,0 +1,18 @@
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.stat-card-title {
+  margin-bottom: 0;
+  font-size: 13px;
+}
+
+.completed-card {
+  border: 3px solid #93d893 !important;
+}
+
+.material-icons {
+  font-size: 20px;
+}
+
