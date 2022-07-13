@@ -77,7 +77,7 @@ export class TasksComponent implements OnInit {
 
   constructor(
     private dataHandler: DataHandlerService, // доступ к данным
-    private dialog: MatDialog, // работа с диалоговым окном
+    private dialog: MatDialog // работа с диалоговым окном
 
   ) {
   }
