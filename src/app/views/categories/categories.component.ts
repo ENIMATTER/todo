@@ -18,6 +18,14 @@ export class CategoriesComponent implements OnInit {
   @Input()
   selectedCategory: Category;
 
+  @Input("categoryMap")
+  set setCategoryMap(categoryMap: Map<Category, number>){
+    this.selectedCategoryMap = categoryMap;
+  }
+
+  @Input()
+  uncompletedTotal: number;
+
   // выбрали категорию из списка
   @Output()
   selectCategory = new EventEmitter<Category>();
@@ -41,6 +49,8 @@ export class CategoriesComponent implements OnInit {
   // для отображения иконки редактирования при наведении на категорию
   indexMouseMove: number;
   searchCategoryTitle: string; // текущее значение для поиска категорий
+
+  selectedCategoryMap: Map<Category, number>;
 
   constructor(
     private dataHandler: DataHandlerService,
@@ -66,7 +76,7 @@ export class CategoriesComponent implements OnInit {
     this.selectCategory.emit(this.selectedCategory);
   }
 
-  // сохраняет индекс записи категории, над который в данный момент проходит мышка (и там отображается иконка редактирования)
+  // сохраняет индекс записи категории, над которым в данный момент проходит мышка (и там отображается иконка редактирования)
   showEditIcon(index: number) {
     this.indexMouseMove = index;
 
