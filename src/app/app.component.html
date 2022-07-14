@@ -1,49 +1,64 @@
-<div class="wrapper ">
+<div class="wrapper">
 
-  <app-categories
-    (selectCategory)="onSelectCategory($event)"
-    (deleteCategory)="onDeleteCategory($event)"
-    (updateCategory)="onUpdateCategory($event)"
-    (addCategory)="onAddCategory($event)"
-    (searchCategory)="onSearchCategory($event)"
 
-    [categoryMap]="categoryMap"
-    [uncompletedTotal]="uncompletedTotalTasksCount"
+  <div class="sidebar"
+       data-step="1"
+       data-intro="Добавление/удаление/редактирование категорий"
+  >
 
-    [selectedCategory]="selectedCategory"
-    [categories]="categories">
+    <app-categories
+      (selectCategory)="onSelectCategory($event)"
+      (deleteCategory)="onDeleteCategory($event)"
+      (updateCategory)="onUpdateCategory($event)"
+      (addCategory)="onAddCategory($event)"
+      (searchCategory)="onSearchCategory($event)"
+      [categoryMap]="categoryMap"
+      [uncompletedTotal]="uncompletedTotalTasksCount"
 
-  </app-categories>
+
+      [selectedCategory]="selectedCategory"
+      [categories]="categories"></app-categories>
+
+  </div>
 
 
   <div class="main-panel">
 
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
 
+      <!--    навигация с шапкой и списком категорий-->
+
       <app-header
+        (toggleStat)="toggleStat($event)"
         [categoryName]="selectedCategory ? selectedCategory.title: 'Все'"
         [showStat]="showStat"
-        (toggleStat)="toggleStat($event)">
 
-      </app-header>
+      ></app-header>
 
     </nav>
 
     <div class="content">
       <div class="container-fluid">
 
-        <app-stat
+        <div
+          data-step="2"
+          data-intro="Статистика по задачам">
 
-          [totalTasksInCategory]="totalTasksCountInCategory"
-          [completeTasksInCategory]="completedCountInCategory"
-          [uncompleteTasksInCategory]="uncompletedCountInCategory"
-          [showStat]="showStat">
+          <!-- статистика -->
+          <app-stat
+            [completeTasksInCategory]="completedCountInCategory"
+            [showStat]="showStat"
+            [totalTasksInCategory]="totalTasksCountInCategory"
+            [uncompleteTasksInCategory]="uncompletedCountInCategory"
+          ></app-stat>
 
-        </app-stat>
+        </div>
 
-        <div class="row">
+        <div class="row" >
 
-          <div class="col-12">
+          <div class="col-12"
+               data-step="3"
+               data-intro="Список всех задач с поиском и фильтрами">
 
             <app-tasks
               (updateTask)="onUpdateTask($event)"

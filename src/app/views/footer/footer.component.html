@@ -1,6 +1,9 @@
 <footer class="footer">
   <div class="container-fluid">
-    <nav class="float-left">
+
+    <nav class="float-left"
+         data-step="5"
+         data-intro="Дополнительные сайты и информация">
       <ul>
         <li>
           <a [href]="site">
@@ -20,6 +23,7 @@
 
       </ul>
     </nav>
+
     <div class="copyright float-right">* Тестовые данные обнуляются при обновлении страницы&nbsp;&nbsp;
       © {{year | date: 'yyyy'}}
       <a [href]="site" target="_blank">{{siteName}}</a>
