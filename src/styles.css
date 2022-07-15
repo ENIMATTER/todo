@@ -58,3 +58,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 app-header{
   width: 100%;
 }
+
+.ng-sidebar--left {
+  bottom: auto !important;
+  left: auto !important;
+  top: auto !important;
+}

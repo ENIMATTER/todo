@@ -42,6 +42,11 @@ export class AppComponent implements OnInit {
   private priorityFilter: Priority;
   private statusFilter: boolean;
 
+  // параметры бокового меню с категориями
+  menuOpened: boolean = true; // открыть-закрыть
+  menuMode: any = 'push'; // тип выдвижения (поверх, с толканием и пр.)
+  menuPosition: any = 'left'; // сторона
+  showBackdrop: boolean = false; // показывать фоновое затемнение или нет
 
   constructor(
     private dataHandler: DataHandlerService, // фасад для работы с данными
@@ -240,5 +245,16 @@ export class AppComponent implements OnInit {
   toggleStat(showStat: boolean): void {
     this.showStat = showStat;
   }
+
+  // если закрыли меню любым способом - ставим значение false
+  onClosedMenu() {
+    this.menuOpened = false;
+  }
+
+  // показать-скрыть меню
+  toggleMenu() {
+    this.menuOpened = !this.menuOpened;
+  }
+
 
 }

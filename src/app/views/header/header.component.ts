@@ -20,6 +20,9 @@ export class HeaderComponent implements OnInit {
   @Output()
   toggleStat = new EventEmitter<boolean>();
 
+  @Output()
+  toggleMenu = new EventEmitter();
+
   constructor(
     private dialog: MatDialog,
     private introService: IntroService
@@ -42,6 +45,10 @@ export class HeaderComponent implements OnInit {
 
   showIntroHelp(){
     this.introService.startIntroJS(false);
+  }
+
+  onToggleMenu(){
+    this.toggleMenu.emit();
   }
 
 }
