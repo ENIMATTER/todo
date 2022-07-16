@@ -75,3 +75,7 @@ span.add-icon-area {
   display: inline-block;
   text-align: center;
 }
+
+.sidebar[data-color="mint"] li.active > a {
+  background-color: #72ceaf;
+}

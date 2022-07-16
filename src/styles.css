@@ -64,3 +64,8 @@ app-header{
   left: auto !important;
   top: auto !important;
 }
+
+.card .card-header-warning .card-icon, .card .card-header-warning .card-text, .card .card-header-warning:not(.card-header-icon):not(.card-header-text), .card.bg-warning, .card.card-rotate.bg-warning .front, .card.card-rotate.bg-warning .back {
+  background: linear-gradient(60deg, #82c1b8, #308163);
+}
+

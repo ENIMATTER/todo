@@ -4,6 +4,7 @@ import {Category} from "../../model/Category";
 import {EditCategoryDialogComponent} from "../../dialog/edit-category-dialog/edit-category-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {OperType} from "../../dialog/OperType";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
   selector: 'app-categories',
@@ -52,15 +53,21 @@ export class CategoriesComponent implements OnInit {
 
   selectedCategoryMap: Map<Category, number>;
 
+  isMobile: boolean;
+  isTablet: boolean;
+
   constructor(
     private dataHandler: DataHandlerService,
-    private dialog: MatDialog // внедряем MatDialog, чтобы работать с диалоговыми окнами
+    private dialog: MatDialog, // внедряем MatDialog, чтобы работать с диалоговыми окнами
+    private deviceService: DeviceDetectorService
   ) {
+    this.isMobile = deviceService.isMobile();
+    this.isTablet = deviceService.isTablet();
   }
 
   // метод вызывается автоматически после инициализации компонента
   ngOnInit() {
-    // this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
+
   }
 
   showTasksByCategory(category: Category): void {

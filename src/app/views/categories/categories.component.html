@@ -1,4 +1,4 @@
-<div class="sidebar" data-color="green">
+<div class="sidebar" data-color="mint">
 
   <div class="logo">
 
@@ -82,7 +82,7 @@
           <span class="edit-category-icon-area">
 
             <mat-icon
-              *ngIf="indexMouseMove === index"
+              *ngIf="indexMouseMove === index || isMobile || isTablet"
               (click)="$event.stopPropagation(); openEditDialog(mapValue.key)"
               class="edit-category-icon"
             >edit
