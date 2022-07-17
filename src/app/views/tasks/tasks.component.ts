@@ -10,6 +10,7 @@ import {Category} from "../../model/Category";
 import {Priority} from "../../model/Priority";
 import {OperType} from "../../dialog/OperType";
 import {MatTableDataSource} from "@angular/material/table";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
   selector: 'app-tasks',
@@ -75,19 +76,21 @@ export class TasksComponent implements OnInit {
   @Input()
   selectedCategory: Category;
 
+  isMobile: boolean;
+
   constructor(
     private dataHandler: DataHandlerService, // доступ к данным
-    private dialog: MatDialog // работа с диалоговым окном
-
+    private dialog: MatDialog, // работа с диалоговым окном
+    private deviceService: DeviceDetectorService
   ) {
+    this.isMobile = deviceService.isMobile();
   }
 
   ngOnInit() {
-    // this.dataHandler.getAllTasks().subscribe(tasks => this.tasks = tasks);
 
     // датасорс обязательно нужно создавать для таблицы, в него присваивается любой источник (БД, массивы, JSON и пр.)
     this.dataSource = new MatTableDataSource();
-    //this.fillTable(); // заполняем таблицы данными (задачи) и всеми метаданными
+
     this.onSelectCategory(null);
   }
 
@@ -250,5 +253,15 @@ export class TasksComponent implements OnInit {
       }
     });
 
+  }
+
+// в зависимости от статуса задачи - вернуть фоновый цвет
+  getMobilePriorityBgColor(task: Task) {
+
+    if (task.priority != null && !task.completed) {
+      return task.priority.color;
+    }
+
+    return 'none';
   }
 }
