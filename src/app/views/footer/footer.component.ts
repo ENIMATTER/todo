@@ -30,7 +30,7 @@ export class FooterComponent implements OnInit {
         autoFocus: false,
         data: {
           dialogTitle: 'О программе',
-          message: 'Данное приложение было создано для для практики Angular'
+          message: 'Данное приложение было создано для практики Angular'
         },
         width: '400px'
       });
