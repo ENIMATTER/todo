@@ -3,21 +3,12 @@
 
     <nav class="float-left"
          data-step="5"
-         data-intro="Дополнительные сайты и информация">
+         data-intro="Дополнительная информация">
       <ul>
-        <li>
-          <a [href]="site">
-            Наш сайт
-          </a>
-        </li>
+
         <li>
           <a (click)="openAboutDialog()" class="link">
             О приложении
-          </a>
-        </li>
-        <li>
-          <a [href]="blog">
-            Блог
           </a>
         </li>
 
@@ -26,7 +17,7 @@
 
     <div class="copyright float-right">* Тестовые данные обнуляются при обновлении страницы&nbsp;&nbsp;
       © {{year | date: 'yyyy'}}
-      <a [href]="site" target="_blank">{{siteName}}</a>
+      <a>{{siteName}}</a>
     </div>
   </div>
 </footer>

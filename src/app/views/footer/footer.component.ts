@@ -12,8 +12,6 @@ import {MatDialog} from "@angular/material/dialog";
 // подвал - нижняя часть страницы
 export class FooterComponent implements OnInit {
   year: Date;
-  site = 'https://www.google.com/';
-  blog = 'https://www.google.com/';
   siteName = 'Enimatters Site';
 
   constructor(private dialog: MatDialog) {
