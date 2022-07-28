@@ -13,18 +13,16 @@ import {DeviceDetectorService} from "ngx-device-detector";
 export class CategoriesComponent implements OnInit {
 
   @Input()
-  categories: Category[];
-
-  @Input()
   selectedCategory: Category;
 
-  @Input("categoryMap")
-  set setCategoryMap(categoryMap: Map<Category, number>){
-    this.selectedCategoryMap = categoryMap;
+  @Input("categories")
+  set setCategories(categories: Category[]){
+    this.categories = categories;
   }
 
   @Input()
-  uncompletedTotal: number;
+  uncompletedCountForCategoryAll: number;
+
 
   // выбрали категорию из списка
   @Output()
@@ -54,6 +52,8 @@ export class CategoriesComponent implements OnInit {
 
   isMobile: boolean;
   isTablet: boolean;
+
+  categories: Category[];
 
   constructor(
     private dialog: MatDialog, // внедряем MatDialog, чтобы работать с диалоговыми окнами

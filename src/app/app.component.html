@@ -18,18 +18,19 @@
          data-intro="Добавление/удаление/редактирование категорий"
     >
 
-<!--      <app-categories-->
-<!--        (selectCategory)="onSelectCategory($event)"-->
-<!--        (deleteCategory)="onDeleteCategory($event)"-->
-<!--        (updateCategory)="onUpdateCategory($event)"-->
-<!--        (addCategory)="onAddCategory($event)"-->
-<!--        (searchCategory)="onSearchCategory($event)"-->
-<!--        [categoryMap]="categoryMap"-->
-<!--        [uncompletedTotal]="uncompletedTotalTasksCount"-->
+      <app-categories
+        (selectCategory)="selectCategory($event)"
+        (deleteCategory)="deleteCategory($event)"
+        (updateCategory)="updateCategory($event)"
+        (addCategory)="addCategory($event)"
+        (searchCategory)="searchCategory($event)"
 
+        [uncompletedCountForCategoryAll]="uncompletedCountForCategoryAll"
+        [selectedCategory]="selectedCategory"
+        [categories]="categories"
+      >
 
-<!--        [selectedCategory]="selectedCategory"-->
-<!--        [categories]="categories"></app-categories>-->
+      </app-categories>
 
     </div>
 
