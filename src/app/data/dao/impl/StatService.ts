@@ -1,22 +1,25 @@
-import { Injectable } from '@angular/core';
-import {Stat} from "../../../model/Stat";
-import {HttpClient} from "@angular/common/http";
+import {Observable} from 'rxjs';
+import {Inject, Injectable, InjectionToken} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {StatDAO} from "../interface/StatDAO";
-import {Observable} from "rxjs";
+import {Stat} from "../../../model/Stat";
+
+export const STAT_URL_TOKEN = new InjectionToken<string>('url');
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class StatService implements StatDAO{
 
-  url = 'http://localhost:8080/stat';
-
-  constructor(private http: HttpClient // для выполнения HTTP запросов
-  ) { }
+  constructor(@Inject(STAT_URL_TOKEN) private baseUrl: any,
+              private http: HttpClient // для выполнения HTTP запросов
+  ) {
+  }
 
   // общая статистика
   getOverallStat(): Observable<Stat> {
-    return this.http.get<Stat>(this.url);
+    return this.http.get<Stat>(this.baseUrl);
   }
 
 }
