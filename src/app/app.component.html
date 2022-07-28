@@ -18,18 +18,18 @@
          data-intro="Добавление/удаление/редактирование категорий"
     >
 
-      <app-categories
-        (selectCategory)="onSelectCategory($event)"
-        (deleteCategory)="onDeleteCategory($event)"
-        (updateCategory)="onUpdateCategory($event)"
-        (addCategory)="onAddCategory($event)"
-        (searchCategory)="onSearchCategory($event)"
-        [categoryMap]="categoryMap"
-        [uncompletedTotal]="uncompletedTotalTasksCount"
+<!--      <app-categories-->
+<!--        (selectCategory)="onSelectCategory($event)"-->
+<!--        (deleteCategory)="onDeleteCategory($event)"-->
+<!--        (updateCategory)="onUpdateCategory($event)"-->
+<!--        (addCategory)="onAddCategory($event)"-->
+<!--        (searchCategory)="onSearchCategory($event)"-->
+<!--        [categoryMap]="categoryMap"-->
+<!--        [uncompletedTotal]="uncompletedTotalTasksCount"-->
 
 
-        [selectedCategory]="selectedCategory"
-        [categories]="categories"></app-categories>
+<!--        [selectedCategory]="selectedCategory"-->
+<!--        [categories]="categories"></app-categories>-->
 
     </div>
 
@@ -43,14 +43,14 @@
 
         <!--    навигация с шапкой и списком категорий-->
 
-        <app-header
-          (toggleStat)="toggleStat($event)"
-          [categoryName]="selectedCategory ? selectedCategory.title: 'Все'"
-          [showStat]="showStat"
+<!--        <app-header-->
+<!--          (toggleStat)="toggleStat($event)"-->
+<!--          [categoryName]="selectedCategory ? selectedCategory.title: 'Все'"-->
+<!--          [showStat]="showStat"-->
 
-          (toggleMenu)="toggleMenu()"
+<!--          (toggleMenu)="toggleMenu()"-->
 
-        ></app-header>
+<!--        ></app-header>-->
 
       </nav>
 
@@ -62,12 +62,12 @@
             data-intro="Статистика по задачам">
 
             <!-- статистика -->
-            <app-stat
-              [completeTasksInCategory]="completedCountInCategory"
-              [showStat]="showStat"
-              [totalTasksInCategory]="totalTasksCountInCategory"
-              [uncompleteTasksInCategory]="uncompletedCountInCategory"
-            ></app-stat>
+<!--            <app-stat-->
+<!--              [completeTasksInCategory]="completedCountInCategory"-->
+<!--              [showStat]="showStat"-->
+<!--              [totalTasksInCategory]="totalTasksCountInCategory"-->
+<!--              [uncompleteTasksInCategory]="uncompletedCountInCategory"-->
+<!--            ></app-stat>-->
 
           </div>
 
@@ -77,21 +77,21 @@
                  data-step="3"
                  data-intro="Список всех задач с поиском и фильтрами">
 
-              <app-tasks
-                (updateTask)="onUpdateTask($event)"
-                (deleteTask)="onDeleteTask($event)"
-                (selectCategory)="onSelectCategory($event)"
-                (addTask)="onAddTask($event)"
+<!--              <app-tasks-->
+<!--                (updateTask)="onUpdateTask($event)"-->
+<!--                (deleteTask)="onDeleteTask($event)"-->
+<!--                (selectCategory)="onSelectCategory($event)"-->
+<!--                (addTask)="onAddTask($event)"-->
 
-                [selectedCategory]="selectedCategory"
-                (filterByTitle)="onSearchTasks($event)"
-                (filterByPriority)="onFilterTasksByPriority($event)"
-                (filterByStatus)="onFilterTasksByStatus($event)"
+<!--                [selectedCategory]="selectedCategory"-->
+<!--                (filterByTitle)="onSearchTasks($event)"-->
+<!--                (filterByPriority)="onFilterTasksByPriority($event)"-->
+<!--                (filterByStatus)="onFilterTasksByStatus($event)"-->
 
-                [tasks]="tasks"
-                [priorities]="priorities"
+<!--                [tasks]="tasks"-->
+<!--                [priorities]="priorities"-->
 
-              ></app-tasks>
+<!--              ></app-tasks>-->
             </div>
           </div>
         </div>

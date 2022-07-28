@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
@@ -9,7 +9,7 @@ export class CommonService<T> {
 
   private readonly url: string;
 
-  constructor(url: string,  // базовый URL для доступа к данным
+  constructor(@Inject(String) url: string,  // базовый URL для доступа к данным
               private httpClient: HttpClient // для выполнения HTTP запросов
   ) {
     this.url = url;

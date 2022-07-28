@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {DataHandlerService} from "../../service/data-handler.service";
 import {Task} from 'src/app/model/Task';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
@@ -79,7 +78,6 @@ export class TasksComponent implements OnInit {
   isMobile: boolean;
 
   constructor(
-    private dataHandler: DataHandlerService, // доступ к данным
     private dialog: MatDialog, // работа с диалоговым окном
     private deviceService: DeviceDetectorService
   ) {
