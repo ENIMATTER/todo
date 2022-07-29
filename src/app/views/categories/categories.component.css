@@ -79,3 +79,8 @@ span.add-icon-area {
 .sidebar[data-color="mint"] li.active > a {
   background-color: #72ceaf;
 }
+
+#categories {
+  width: 100%;
+  overflow-x: hidden; /* чтобы не было гориз. прокрутки */
+}

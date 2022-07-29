@@ -1,4 +1,6 @@
-<div class="sidebar" data-color="mint">
+<!--область страницы с категориями-->
+
+<div id="categories" class="sidebar" data-color="mint">
 
   <div class="logo">
 
@@ -7,14 +9,19 @@
     <!--    иконка добавления новой категории -->
     <span class="add-icon-area">
 
-          <button (click)="openAddDialog()" class="add-icon" mat-icon-button>
+          <button mat-icon-button (click)="openAddDialog()" class="add-icon">
       <mat-icon>add</mat-icon>
         </button>
     </span>
 
   </div>
+
+
   <div class="sidebar-wrapper">
+
+
     <ul class="nav">
+
 
       <!--      поиск категорий -->
       <div class="search-category-area">
@@ -22,37 +29,56 @@
         <mat-form-field class="example-full-width">
           <input
 
-            #inputSearchCategory
-
-            (keydown.escape)="searchCategoryTitle = ''; search()"
-            (keyup)="search()"
-            [(ngModel)]="searchCategoryTitle"
-
             matInput
             maxlength="256"
             placeholder="Поиск категорий"
+
+            [(ngModel)]="filterTitle"
+            (ngModelChange)="this.checkFilterChanged()"
+
+
+            (keydown.escape)="clearAndSearch()"
+
           />
 
           <button
-            (click)="searchCategoryTitle = ''; search()"
-            *ngIf="inputSearchCategory.value.trim().length > 0" aria-label="Clear"
-            class="search-category-button size25 gray"
-            mat-button mat-icon-button matSuffix >
+            *ngIf="filterTitle && filterTitle.trim().length > 0"
+            mat-button matSuffix mat-icon-button
+            aria-label="Clear"
+
+            class="search-category-button"
+
+            (click)="clearAndSearch()"
+          >
             <mat-icon>clear</mat-icon>
           </button>
+
+          <button
+            *ngIf="filterTitle && filterTitle.trim().length > 0"
+
+            mat-button matSuffix mat-icon-button
+            (click)="search()"
+
+            [ngClass]="{'blink-button': filterChanged}"
+
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+
         </mat-form-field>
+
       </div>
 
       <!-- виртуальная категория 'Все'-->
-      <li (click)="showTasksByCategory(null)" [class.active]="selectedCategory === null"
-          class="nav-item category">
+      <li class="nav-item category" [class.active]="selectedCategory === null">
 
-        <a class="nav-link pointer">
+        <a class="nav-link">
 
           <!--          название категории-->
           <span class="all-category-title">Все</span>
 
-          <span class="uncompleted-count"> {{uncompletedCountForCategoryAll}}</span>
+          <!--сколько невыполненных задач-->
+          <span class="uncompleted-count"> {{uncompletedCountForCategoryAll || 0}}</span>
 
         </a>
       </li>
@@ -60,41 +86,50 @@
       <!-- разделитель-->
       <div class="line"></div>
 
-      <div *ngIf="categories && categories.length === 0"> <p class="not-found"> Ничего не найдено </p> </div>
+      <div *ngIf="!categories || categories.length === 0"><p class="not-found">Ничего не найдено</p></div>
 
+      <!--      список категорий-->
       <li
-        (click)="showTasksByCategory(category)" (mouseenter)="showEditIcon(index)"
 
-        *ngFor="let category of categories; let index = index"
+        *ngFor="let category of categories, let index = index"
 
-        (mouseleave)="showEditIcon(null)"
 
-        [class.active]="category === selectedCategory"
+        [class.active]="(selectedCategory && category) && category.id === selectedCategory.id"
 
-        class="nav-item pointer">
+        (click)="showCategory(category)"
+        (mouseleave)="showEditIcon(false, index)"
+        (mouseenter)="showEditIcon(true, index)"
+
+        class="nav-item category"
+      >
 
         <a class="nav-link">
 
           <!--          название категории-->
           <span class="category-title">{{category.title}}</span>
 
+
           <!--         кнопка редактирования категории-->
           <span class="edit-category-icon-area">
 
             <mat-icon
-              *ngIf="indexMouseMove === index || isMobile || isTablet"
+              *ngIf="(showEditIcon && index == indexMouseMove) || isMobile"
               (click)="$event.stopPropagation(); openEditDialog(category)"
+
               class="edit-category-icon"
+
             >edit
             </mat-icon>
 
           </span>
 
-          <!--сколько невыполненных задач-->
+          <!--сколько невыполненных задач (null конвертируем в цифру ноль)-->
           <span class="uncompleted-count"> {{category.uncompletedCount || 0}}</span>
 
         </a>
+
       </li>
+
     </ul>
 
   </div>
@@ -102,3 +137,4 @@
   <div class="sidebar-background"></div>
 
 </div>
+
