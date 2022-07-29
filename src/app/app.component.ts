@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   // выбранная категория
   selectedCategory: Category = null; // null - значит будет выбрана категория "Все"
 
-
   // параметры бокового меню с категориями
   menuOpened: boolean; // открыть-закрыть
   menuMode: any; // тип выдвижения (поверх, с толканием и пр.)
@@ -71,26 +70,24 @@ export class AppComponent implements OnInit {
 
   }
 
-
   // добавление категории
   addCategory(category: Category) {
     this.categoryService.add(category).subscribe(result => {
-
-      }
-    );
+      this.searchCategory(this.categorySearchValues);
+    });
   }
 
   // удаление категории
   deleteCategory(category: Category) {
     this.categoryService.delete(category.id).subscribe(cat => {
-
+      this.searchCategory(this.categorySearchValues);
     });
   }
 
   // обновлении категории
   updateCategory(category: Category) {
     this.categoryService.update(category).subscribe(() => {
-
+      this.searchCategory(this.categorySearchValues);
     });
   }
 
@@ -100,7 +97,6 @@ export class AppComponent implements OnInit {
     this.categoryService.findAll().subscribe(result => {
       this.categories = result;
     });
-
 
   }
 

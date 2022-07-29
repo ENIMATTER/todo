@@ -11,17 +11,17 @@
 
       matInput maxlength="15"
 
-      [(ngModel)]="categoryTitle"
+      [(ngModel)]="category.title"
       (keydown.enter)="onConfirm()"
     >
 
     <button
-      *ngIf="categoryTitle.trim().length > 0"
+      *ngIf="category.title.trim().length > 0"
 
       class="clear-icon size25"
       mat-button matSuffix mat-icon-button aria-label="Clear"
 
-      (click)="categoryTitle= ''"
+      (click)="category.title= ''"
 
     >
       <mat-icon>clear</mat-icon>
@@ -48,7 +48,6 @@
   <div class="col-12 text-center padding_0">
     <button
       mat-button
-      *ngIf="canDelete()"
       (click)="delete()" class="red">
       Удалить
     </button>
