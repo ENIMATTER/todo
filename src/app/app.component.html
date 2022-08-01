@@ -81,9 +81,11 @@
 
               <app-tasks
 
-                [selectedCategory]="selectedCategory"
-
+                [totalTasksFounded]="totalTasksFounded"
                 [tasks]="tasks"
+                [taskSearchValues]="taskSearchValues"
+
+                (paging)="paging($event)"
 
               >
 

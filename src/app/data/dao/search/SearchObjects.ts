@@ -8,8 +8,8 @@ export class TaskSearchValues{
   completed: number = null;
   priorityId: number = null;
   categoryId: number = null;
-  pageNumber = 0;
-  pageSize = 5;
+  pageNumber: number = 0;
+  pageSize: number = 5;
 
   sortColumn = 'title';
   sortDirection = 'asc';

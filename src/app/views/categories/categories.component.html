@@ -70,7 +70,7 @@
       </div>
 
       <!-- виртуальная категория 'Все'-->
-      <li class="nav-item category" [class.active]="selectedCategory === null"
+      <li class="nav-item category pointer" [class.active]="selectedCategory === null"
         (click)="showCategory(null)"
       >
 
@@ -102,7 +102,7 @@
         (mouseleave)="showEditIcon(false, index)"
         (mouseenter)="showEditIcon(true, index)"
 
-        class="nav-item category"
+        class="nav-item category pointer"
       >
 
         <a class="nav-link">
