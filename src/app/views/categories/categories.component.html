@@ -70,7 +70,9 @@
       </div>
 
       <!-- виртуальная категория 'Все'-->
-      <li class="nav-item category" [class.active]="selectedCategory === null">
+      <li class="nav-item category" [class.active]="selectedCategory === null"
+        (click)="showCategory(null)"
+      >
 
         <a class="nav-link">
 

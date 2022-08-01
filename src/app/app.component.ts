@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Category} from "./model/Category";
+import {Task} from "./model/Task";
 import {IntroService} from "./service/intro.service";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {CategoryService} from "./data/dao/impl/CategoryService";
-import {CategorySearchValues} from "./data/dao/search/SearchObjects";
+import {CategorySearchValues, TaskSearchValues} from "./data/dao/search/SearchObjects";
+import {TaskService} from "./data/dao/impl/TaskService";
 
 @Component({
   selector: 'app-root',
@@ -15,6 +17,7 @@ import {CategorySearchValues} from "./data/dao/search/SearchObjects";
 export class AppComponent implements OnInit {
 
   categories: Category[]; // все категории
+  tasks: Task[];
 
   // статистика
   uncompletedCountForCategoryAll: number;
@@ -37,9 +40,11 @@ export class AppComponent implements OnInit {
 
   // параметры поисков
   categorySearchValues = new CategorySearchValues(); // экземпляр можно создать тут же, т.к. не загружаем из cookies
+  taskSearchValues = new TaskSearchValues();
 
   constructor(
     private categoryService: CategoryService,
+    private taskService: TaskService,
     private introService: IntroService, // вводная справоч. информация с выделением областей
     private deviceService: DeviceDetectorService // для определения типа устройства (моб., десктоп, планшет)
   ) {
@@ -109,6 +114,27 @@ export class AppComponent implements OnInit {
 
   // изменение категории
   selectCategory(category: Category): void {
+
+    this.selectedCategory = category;
+
+    this.taskSearchValues.categoryId = category ? category.id : null;
+
+    this.searchTasks(this.taskSearchValues);
+
+    if(this.isMobile){
+      this.menuOpened = false;
+    }
+
+  }
+
+  searchTasks(searchTaskValues: TaskSearchValues){
+
+    this.taskSearchValues = searchTaskValues;
+
+    this.taskService.findTasks(this.taskSearchValues).subscribe(result => {
+      this.tasks = result.content;
+      console.log(result);
+    })
 
   }
 

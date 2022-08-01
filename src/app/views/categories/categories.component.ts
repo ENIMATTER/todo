@@ -163,6 +163,12 @@ export class CategoriesComponent implements OnInit {
   // выбираем категорию для отображения
   showCategory(category: Category) {
 
+    if(this.selectedCategory === category){
+      return;
+    }
+
+    this.selectedCategory = category;
+    this.selectCategory.emit(this.selectedCategory);
 
   }
 
