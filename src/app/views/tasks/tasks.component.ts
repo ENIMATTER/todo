@@ -6,6 +6,7 @@ import {Category} from "../../model/Category";
 import {Task} from "../../model/Task";
 import {PageEvent} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
+import {Priority} from "../../model/Priority";
 
 
 @Component({
@@ -20,15 +21,14 @@ export class TaskListComponent implements OnInit {
 
   // ----------------------- входящие параметры ----------------------------
 
-
   // переменные для настройки постраничности должны быть проинициализированы первыми (до обновления tasks)
   // чтобы компонент постраничности правильно отработал
-
 
   @Input()
   totalTasksFounded: number; // сколько всего задач найдено
 
-
+  @Input()
+  showSearch: boolean;
 
   // задачи для отображения на странице
   @Input('tasks')
@@ -37,13 +37,21 @@ export class TaskListComponent implements OnInit {
     this.assignTableSource();   // передать данные таблице для отображения задач
   }
 
+  @Input('priorities')
+  set setPriorities(priorities: Priority[]) {
+    this.priorities = priorities;
+  }
+
   // все возможные параметры для поиска задач
   @Input('taskSearchValues')
   set setTaskSearchValues(taskSearchValues: TaskSearchValues) {
     this.taskSearchValues = taskSearchValues;
+    this.initSearchValues();
+    this.initSortDirectionIcon();
   }
 
-
+  @Input()
+  selectedCategory: Category;
 
   // ----------------------- исходящие действия----------------------------
 
@@ -65,26 +73,44 @@ export class TaskListComponent implements OnInit {
   @Output()
   searchAction = new EventEmitter<TaskSearchValues>(); // переход по страницам данных
 
+  @Output()
+  toggleSearch = new EventEmitter<boolean>();
 
   // -------------------------------------------------------------------------
 
-
   tasks: Task[]; // текущий список задач для отображения
+  priorities: Priority[];
 
   // поля для таблицы (те, что отображают данные из задачи - должны совпадать с названиями переменных класса)
   displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
   dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>(); // источник данных для таблицы
 
+  changed = false;
+
+  sortIconName: string;
 
   isMobile: boolean; // мобильное ли устройство
 
   // параметры поиска задач - первоначально данные загружаются из cookies (в app.component)
   taskSearchValues: TaskSearchValues;
 
-
   // цвета
   readonly colorCompletedTask = '#F8F9FA';
   readonly colorWhite = '#fff';
+
+  readonly defaultSortColumn = 'title';
+  readonly defaultSortDirection = 'asc';
+
+  // названия иконок из коллекции
+  readonly iconNameDown = 'arrow_downward';
+  readonly iconNameUp = 'arrow_upward';
+
+  // значения для поиска (локальные переменные)
+  filterTitle: string;
+  filterCompleted: number;
+  filterPriorityId: number;
+  filterSortColumn: string;
+  filterSortDirection: string;
 
 
   constructor(
@@ -165,12 +191,110 @@ export class TaskListComponent implements OnInit {
     return 'none';
   }
 
-
 // в это событие попадает как переход на другую страницу (pageIndex), так и изменение кол-ва данных на страниц (pageSize)
   pageChanged(pageEvent: PageEvent) {
     this.paging.emit(pageEvent);
   }
 
+  // параметры поиска
+  initSearch() {
+
+    // сохраняем значения перед поиском
+    this.taskSearchValues.title = this.filterTitle;
+    this.taskSearchValues.completed = this.filterCompleted;
+    this.taskSearchValues.priorityId = this.filterPriorityId;
+    this.taskSearchValues.sortColumn = this.filterSortColumn;
+    this.taskSearchValues.sortDirection = this.filterSortDirection;
+
+    this.searchAction.emit(this.taskSearchValues);
+
+    this.changed = false; // сбрасываем флаг изменения
+
+  }
+
+
+  // проверяет, были ли изменены какие-либо параметры поиска (по сравнению со старым значением)
+  checkFilterChanged() {
+
+    this.changed = false;
+
+    // поочередно проверяем все фильтры (текущее введенное значение с последним сохраненным)
+    if (this.taskSearchValues.title !== this.filterTitle) {
+      this.changed = true;
+    }
+
+    if (this.taskSearchValues.completed !== this.filterCompleted) {
+      this.changed = true;
+    }
+
+    if (this.taskSearchValues.priorityId !== this.filterPriorityId) {
+      this.changed = true;
+    }
+
+    if (this.taskSearchValues.sortColumn !== this.filterSortColumn) {
+      this.changed = true;
+    }
+
+    if (this.taskSearchValues.sortDirection !== this.filterSortDirection) {
+      this.changed = true;
+    }
+
+    return this.changed;
+
+  }
+
+
+
+  // выбрать правильную иконку (убывание, возрастание)
+  initSortDirectionIcon() {
+
+    if (this.filterSortDirection === 'desc') {
+      this.sortIconName = this.iconNameDown;
+    } else {
+      this.sortIconName = this.iconNameUp;
+    }
+
+  }
+
+
+  // изменили направление сортировки
+  changedSortDirection() {
+
+    if (this.filterSortDirection === 'asc') {
+      this.filterSortDirection = 'desc';
+    } else {
+      this.filterSortDirection = 'asc';
+    }
+
+    this.initSortDirectionIcon(); // применяем правильную иконку
+
+  }
+
+  // проинициализировать локальные переменные поиска
+  initSearchValues() {
+    if (!this.taskSearchValues) {
+      return;
+    }
+    this.filterTitle = this.taskSearchValues.title;
+    this.filterCompleted = this.taskSearchValues.completed;
+    this.filterPriorityId = this.taskSearchValues.priorityId;
+    this.filterSortColumn = this.taskSearchValues.sortColumn;
+    this.filterSortDirection = this.taskSearchValues.sortDirection;
+  }
+
+  // сбросить локальные переменные поиска
+  clearSearchValues() {
+    this.filterTitle = '';
+    this.filterCompleted = null;
+    this.filterPriorityId = null;
+    this.filterSortColumn = this.defaultSortColumn;
+    this.filterSortDirection = this.defaultSortDirection;
+    this.initSortDirectionIcon();
+  }
+
+  onToggleSearch(){
+    this.toggleSearch.emit(!this.showSearch)
+  }
 
 }
 

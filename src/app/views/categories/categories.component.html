@@ -99,7 +99,7 @@
         [class.active]="(selectedCategory && category) && category.id === selectedCategory.id"
 
         (click)="showCategory(category)"
-        (mouseleave)="showEditIcon(false, index)"
+        (mouseleave)="showEditIcon(false, null)"
         (mouseenter)="showEditIcon(true, index)"
 
         class="nav-item category pointer"

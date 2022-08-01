@@ -121,4 +121,6 @@ app-header{
   animation: glowing 700ms infinite;
 }
 
-
+.mat-raised-button.mat-accent{
+  background-color: #72ceaf;
+}
