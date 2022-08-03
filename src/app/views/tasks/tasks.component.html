@@ -198,8 +198,8 @@
 
         <div class="table-responsive" *ngIf="tasks && (tasks.length > 0)">
 
-          <table mat-table [dataSource]="dataSource" matSort data-step="2"
-                 data-intro="Список всех задач с возможностью редактирования"
+          <table mat-table [dataSource]="dataSource" matSort
+
                  data-position='bottom' >
 
 
@@ -297,7 +297,6 @@
 
             <!--            галочка для выполнения задачи-->
             <ng-container matColumnDef="select">
-
               <th mat-header-cell *matHeaderCellDef></th>
 
               <td class="col-select text-right" mat-cell *matCellDef="let task">
@@ -306,7 +305,7 @@
 
                   (click)="$event.stopPropagation()"
                   (change)="$event ? onToggleCompleted(task) : null"
-                  [checked]="task.completed"
+                  [checked]="task.completed === 1"
                 >
                 </mat-checkbox>
 

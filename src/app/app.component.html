@@ -45,14 +45,16 @@
 
         <!--    навигация с шапкой и списком категорий-->
 
-<!--        <app-header-->
-<!--          (toggleStat)="toggleStat($event)"-->
-<!--          [categoryName]="selectedCategory ? selectedCategory.title: 'Все'"-->
-<!--          [showStat]="showStat"-->
+        <app-header
+          [categoryName]="selectedCategory ? selectedCategory.title: 'Все'"
+          [showStat]="showStat"
 
-<!--          (toggleMenu)="toggleMenu()"-->
+          (toggleStat)="toggleStat($event)"
+          (toggleMenu)="toggleMenu()"
 
-<!--        ></app-header>-->
+        >
+
+        </app-header>
 
       </nav>
 
@@ -63,13 +65,14 @@
             data-step="2"
             data-intro="Статистика по задачам">
 
-            <!-- статистика -->
-<!--            <app-stat-->
-<!--              [completeTasksInCategory]="completedCountInCategory"-->
-<!--              [showStat]="showStat"-->
-<!--              [totalTasksInCategory]="totalTasksCountInCategory"-->
-<!--              [uncompleteTasksInCategory]="uncompletedCountInCategory"-->
-<!--            ></app-stat>-->
+            <app-stat
+
+              [dash]="dash"
+              [showStat]="showStat"
+
+            >
+
+            </app-stat>
 
           </div>
 
