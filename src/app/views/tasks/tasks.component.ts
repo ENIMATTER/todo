@@ -7,6 +7,9 @@ import {Task} from "../../model/Task";
 import {PageEvent} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
 import {Priority} from "../../model/Priority";
+import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-dialog.component";
+import {DialogAction} from "../../object/DialogResult";
+import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
 
 
 @Component({
@@ -40,6 +43,11 @@ export class TaskListComponent implements OnInit {
   @Input('priorities')
   set setPriorities(priorities: Priority[]) {
     this.priorities = priorities;
+  }
+
+  @Input('categories')
+  set setCategories(categories: Category[]) {
+    this.categories = categories;
   }
 
   // все возможные параметры для поиска задач
@@ -80,6 +88,7 @@ export class TaskListComponent implements OnInit {
 
   tasks: Task[]; // текущий список задач для отображения
   priorities: Priority[];
+  categories: Category[];
 
   // поля для таблицы (те, что отображают данные из задачи - должны совпадать с названиями переменных класса)
   displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
@@ -139,14 +148,65 @@ export class TaskListComponent implements OnInit {
   // диалоговое окно для добавления задачи
   openAddDialog() {
 
+    const task = new Task(null, '', 0, null, this.selectedCategory);
 
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
+
+      // передаем новый пустой объект для заполнения
+      // также передаем справочные даныне (категории, приоритеты)
+      data: [task, 'Добавление задачи', this.categories, this.priorities]
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (!(result)) { // если просто закрыли окно, ничего не нажав
+        return;
+      }
+
+      if (result.action === DialogAction.SAVE) { // если нажали ОК
+        this.addTask.emit(task);
+      }
+    });
 
   }
 
   // диалоговое редактирования для добавления задачи
   openEditDialog(task: Task): void {
 
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
+      data: [task, 'Редактирование задачи', this.categories, this.priorities],
+      autoFocus: false
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (!(result)) { // если просто закрыли окно, ничего не нажав
+        return;
+      }
+
+      if (result.action === DialogAction.DELETE) {
+        this.deleteTask.emit(task);
+        return;
+      }
+
+      if (result.action === DialogAction.COMPLETE) {
+        task.completed = 1; // ставим статус задачи как выполненная
+        this.updateTask.emit(task);
+      }
+
+
+      if (result.action === DialogAction.ACTIVATE) {
+        task.completed = 0; // возвращаем статус задачи как невыполненная
+        this.updateTask.emit(task);
+        return;
+      }
+
+      if (result.action === DialogAction.SAVE) { // если нажали ОК и есть результат
+        this.updateTask.emit(task);
+        return;
+      }
+
+    });
 
   }
 
@@ -154,15 +214,40 @@ export class TaskListComponent implements OnInit {
   // диалоговое окно подтверждения удаления
   openDeleteDialog(task: Task) {
 
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '500px',
+      data: {dialogTitle: 'Подтвердите действие', message: `Вы действительно хотите удалить задачу: "${task.title}"?`},
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+
+      if (!(result)) { // если просто закрыли окно, ничего не нажав
+        return;
+      }
+
+
+      if (result.action === DialogAction.OK) { // если нажали ОК
+        this.deleteTask.emit(task);
+      }
+    });
+
   }
 
 
   // нажали/отжали выполнение задачи
   onToggleCompleted(task: Task) {
 
+    if (task.completed === 1) {
+      task.completed = 0;
+    } else {
+      task.completed = 1;
+    }
+
+    this.updateTask.emit(task);
 
   }
-
 
   // в зависимости от статуса задачи - вернуть цвет
   getPriorityColor(task: Task) {
@@ -212,7 +297,6 @@ export class TaskListComponent implements OnInit {
 
   }
 
-
   // проверяет, были ли изменены какие-либо параметры поиска (по сравнению со старым значением)
   checkFilterChanged() {
 
@@ -243,8 +327,6 @@ export class TaskListComponent implements OnInit {
 
   }
 
-
-
   // выбрать правильную иконку (убывание, возрастание)
   initSortDirectionIcon() {
 
@@ -255,7 +337,6 @@ export class TaskListComponent implements OnInit {
     }
 
   }
-
 
   // изменили направление сортировки
   changedSortDirection() {

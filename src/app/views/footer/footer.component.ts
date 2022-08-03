@@ -12,7 +12,7 @@ import {MatDialog} from "@angular/material/dialog";
 // подвал - нижняя часть страницы
 export class FooterComponent implements OnInit {
   year: Date;
-  siteName = 'AE Site';
+  siteName = 'AEFAM Site';
 
   constructor(private dialog: MatDialog) {
   }
@@ -28,7 +28,7 @@ export class FooterComponent implements OnInit {
         autoFocus: false,
         data: {
           dialogTitle: 'О программе',
-          message: 'Данное приложение было создано для практики Java/Spring + Angular'
+          message: 'Данное приложение было создано для практики Java/Spring + Angular. Отдельная благодарность моей будущей жене Анастасие, за поддержку и искреннюю любовь❤'
         },
         width: '400px'
       });

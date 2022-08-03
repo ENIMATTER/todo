@@ -85,16 +85,17 @@
                 [totalTasksFounded]="totalTasksFounded"
                 [tasks]="tasks"
                 [priorities]="priorities"
+                [categories]="categories"
                 [selectedCategory]="selectedCategory"
                 [taskSearchValues]="taskSearchValues"
 
                 (searchAction)="searchTasks($event)"
-                (toggleSearch)="toggleSearch($event)"
                 (selectCategory)="selectCategory($event)"
-                (paging)="paging($event)"
                 (addTask)="addTask($event)"
                 (deleteTask)="deleteTask($event)"
                 (updateTask)="updateTask($event)"
+                (paging)="paging($event)"
+                (toggleSearch)="toggleSearch($event)"
 
               >
 

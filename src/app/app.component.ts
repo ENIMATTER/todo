@@ -196,6 +196,11 @@ export class AppComponent implements OnInit {
   // добавление задачи
   addTask(task: Task) {
 
+    this.taskService.add(task).subscribe(result => {
+
+      this.searchTasks(this.taskSearchValues); // обновляем список задач
+
+    });
 
   }
 
@@ -203,6 +208,11 @@ export class AppComponent implements OnInit {
   // удаление задачи
   deleteTask(task: Task) {
 
+    this.taskService.delete(task.id).subscribe(result => {
+
+      this.searchTasks(this.taskSearchValues); // обновляем список задач
+
+    });
 
   }
 
@@ -210,6 +220,11 @@ export class AppComponent implements OnInit {
   // обновление задачи
   updateTask(task: Task) {
 
+    this.taskService.update(task).subscribe(result => {
+
+      this.searchTasks(this.taskSearchValues); // обновляем список задач
+
+    });
 
   }
 

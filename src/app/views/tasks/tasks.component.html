@@ -305,18 +305,14 @@
                 <mat-checkbox
 
                   (click)="$event.stopPropagation()"
-
                   (change)="$event ? onToggleCompleted(task) : null"
-
                   [checked]="task.completed"
                 >
-
                 </mat-checkbox>
 
-
               </td>
-            </ng-container>
 
+            </ng-container>
 
             <!--            какие поля отображать-->
             <tr mat-header-row *matHeaderRowDef="displayedColumns; "></tr>
@@ -328,7 +324,6 @@
           <mat-paginator (page)="pageChanged($event)" [pageIndex]="taskSearchValues.pageNumber"
                          [pageSize]="taskSearchValues.pageSize" [length]="totalTasksFounded"
                          [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
-
 
         </div>
 
