@@ -13,51 +13,42 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
   styleUrls: ['./edit-task-dialog.component.css']
 })
 
-// редактирование/создание задачи
 export class EditTaskDialogComponent implements OnInit {
 
   constructor(
-    private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
-    @Inject(MAT_DIALOG_DATA) private data: [Task, string, Category[], Priority[]], // данные, которые передаем в текущее диалоговое окно
-    private dialog: MatDialog, // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
-    private deviceService: DeviceDetectorService // определение устройства пользователя
+    private dialogRef: MatDialogRef<EditTaskDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: [Task, string, Category[], Priority[]],
+    private dialog: MatDialog,
+    private deviceService: DeviceDetectorService
   ) {
   }
 
-  // Коллекции получаем из главной страницы (через параметры диалог. окна), чтобы здесь заново не делать запрос в БД
   categories: Category[];
   priorities: Priority[];
 
-  // мобильное ли устройство
   isMobile = this.deviceService.isMobile();
 
-  dialogTitle: string; // заголовок окна
-  task: Task; // задача для редактирования/создания
+  dialogTitle: string;
+  task: Task;
 
-  // сохраняем все значения в отдельные переменные,
-  // чтобы изменения не сказывались на самой задаче и можно было отменить изменения
   newTitle: string;
   newPriorityId: number;
   newCategoryId: number;
   newDate: Date;
 
-  // старый id категории тоже сохраняем, чтобы иметь возможность знать,
-  // какая была до этого категория (нужно для правильного обновления счетчиков)
   oldCategoryId: number;
 
-  canDelete = true; // можно ли удалять объект (активна ли кнопка удаления)
-  canComplete = true; // можно ли завершить задачу (зависит от текущего статуса)
+  canDelete = true;
+  canComplete = true;
 
-  today = new Date(); // сегодняшняя дата
+  today = new Date();
 
   ngOnInit() {
-    this.task = this.data[0]; // задача для редактирования/создания
-    this.dialogTitle = this.data[1]; // текст для диалогового окна
-    this.categories = this.data[2]; // категории для выпадающего списка
-    this.priorities = this.data[3]; // приоритеты для выпадающего списка
+    this.task = this.data[0];
+    this.dialogTitle = this.data[1];
+    this.categories = this.data[2];
+    this.priorities = this.data[3];
 
-    // если было передано значение, значит это редактирование (не создание новой задачи),
-    // поэтому делаем удаление возможным (иначе скрываем иконку)
     if (this.task && this.task.id > 0) {
       this.canDelete = true;
       this.canComplete = true;
@@ -65,7 +56,6 @@ export class EditTaskDialogComponent implements OnInit {
 
     this.newTitle = this.task.title;
 
-    // чтобы в html странице корректно работали выпадающие списки - лучше работать не с объектами, а с их id
     if (this.task.priority) {
       this.newPriorityId = this.task.priority.id;
     }
@@ -76,18 +66,13 @@ export class EditTaskDialogComponent implements OnInit {
     }
 
     if (this.task.date) {
-
-      // создаем new Date, чтобы переданная дата из задачи автоматически сконвертировалась в текущий timezone
-      // (иначе будет показывать время UTC)
       this.newDate = new Date(this.task.date);
     }
 
   }
 
-  // нажали ОК
   confirm(): void {
 
-    // считываем все значения для сохранения в поля задачи
     this.task.title = this.newTitle;
     this.task.priority = this.findPriorityById(this.newPriorityId);
     this.task.category = this.findCategoryById(this.newCategoryId);
@@ -96,23 +81,17 @@ export class EditTaskDialogComponent implements OnInit {
     if (!this.newDate) {
       this.task.date = null;
     } else {
-      // в поле дата хранится в текущей timezone, в БД дата автоматически сохранится в формате UTC
       this.task.date = this.newDate;
     }
 
-
-    // передаем добавленную/измененную задачу в обработчик
-    // что с ним будут делать - уже на задача этого компонента
     this.dialogRef.close(new DialogResult(DialogAction.SAVE, this.task));
 
   }
 
-  // нажали отмену (ничего не сохраняем и закрываем окно)
   cancel(): void {
     this.dialogRef.close(new DialogResult(DialogAction.CANCEL));
   }
 
-  // нажали Удалить
   delete() {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -126,46 +105,38 @@ export class EditTaskDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if (!(result)) { // если просто закрыли окно, ничего не нажав
+      if (!(result)) {
         return;
       }
 
-
       if (result.action === DialogAction.OK) {
-        this.dialogRef.close(new DialogResult(DialogAction.DELETE)); // нажали удалить
+        this.dialogRef.close(new DialogResult(DialogAction.DELETE));
       }
     });
   }
 
-  // нажали Выполнить (завершить) задачу
   complete() {
     this.dialogRef.close(new DialogResult(DialogAction.COMPLETE));
 
   }
 
-  // делаем статус задачи "незавершенным" (активируем)
   activate() {
     this.dialogRef.close(new DialogResult(DialogAction.ACTIVATE));
   }
 
-
-  // поиск приоритета по id
   private findPriorityById(tmpPriorityId: number): Priority {
     return this.priorities.find(t => t.id === tmpPriorityId);
   }
 
-  // поиск категории по id
   private findCategoryById(tmpCategoryId: number): Category {
     return this.categories.find(t => t.id === tmpCategoryId);
   }
 
-  // установка даты + кол-во дней
   addDays(days: number) {
     this.newDate = new Date();
     this.newDate.setDate(this.today.getDate() + days);
   }
 
-  // установка даты "сегодня"
   setToday() {
     this.newDate = this.today;
   }

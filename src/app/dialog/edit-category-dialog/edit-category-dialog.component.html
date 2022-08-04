@@ -1,6 +1,3 @@
-<!--создание/редактирование категории-->
-
-
 <mat-dialog-content>
   <p mat-dialog-title>{{dialogTitle}}</p>
 
@@ -12,7 +9,6 @@
       matInput maxlength="15"
 
       [(ngModel)]="category.title"
-      (keydown.enter)="onConfirm()"
     >
 
     <button
@@ -29,8 +25,6 @@
   </mat-form-field>
 </mat-dialog-content>
 
-
-<!--  кнопки возможных действий-->
 <mat-dialog-actions>
 
   <div class="col-12 text-center padding_0">

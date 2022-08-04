@@ -1,12 +1,9 @@
-<!--область страницы с категориями-->
-
 <div id="categories" class="sidebar" data-color="mint">
 
   <div class="logo">
 
     <span class="nav-title">Категории</span>
 
-    <!--    иконка добавления новой категории -->
     <span class="add-icon-area">
 
           <button mat-icon-button (click)="openAddDialog()" class="add-icon">
@@ -16,30 +13,22 @@
 
   </div>
 
-
   <div class="sidebar-wrapper">
-
 
     <ul class="nav">
 
-
-      <!--      поиск категорий -->
       <div class="search-category-area">
 
         <mat-form-field class="example-full-width">
-          <input
 
+          <input
             matInput
             maxlength="256"
             placeholder="Поиск категорий"
 
             [(ngModel)]="filterTitle"
             (ngModelChange)="this.checkFilterChanged()"
-
-
-            (keydown.escape)="clearAndSearch()"
-
-          />
+          >
 
           <button
             *ngIf="filterTitle && filterTitle.trim().length > 0"
@@ -60,7 +49,6 @@
             (click)="search()"
 
             [ngClass]="{'blink-button': filterChanged}"
-
           >
             <mat-icon>search</mat-icon>
           </button>
@@ -69,32 +57,25 @@
 
       </div>
 
-      <!-- виртуальная категория 'Все'-->
       <li class="nav-item category pointer" [class.active]="selectedCategory === null"
         (click)="showCategory(null)"
       >
 
         <a class="nav-link">
 
-          <!--          название категории-->
           <span class="all-category-title">Все</span>
 
-          <!--сколько невыполненных задач-->
           <span class="uncompleted-count"> {{uncompletedCountForCategoryAll || 0}}</span>
 
         </a>
       </li>
 
-      <!-- разделитель-->
       <div class="line"></div>
 
       <div *ngIf="!categories || categories.length === 0"><p class="not-found">Ничего не найдено</p></div>
 
-      <!--      список категорий-->
       <li
-
         *ngFor="let category of categories, let index = index"
-
 
         [class.active]="(selectedCategory && category) && category.id === selectedCategory.id"
 
@@ -107,11 +88,8 @@
 
         <a class="nav-link">
 
-          <!--          название категории-->
           <span class="category-title">{{category.title}}</span>
 
-
-          <!--         кнопка редактирования категории-->
           <span class="edit-category-icon-area">
 
             <mat-icon
@@ -125,7 +103,6 @@
 
           </span>
 
-          <!--сколько невыполненных задач (null конвертируем в цифру ноль)-->
           <span class="uncompleted-count"> {{category.uncompletedCount || 0}}</span>
 
         </a>

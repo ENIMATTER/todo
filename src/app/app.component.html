@@ -1,6 +1,5 @@
 <ng-sidebar-container style="height: 100vh">
 
-  <!--  слайд-меню-->
   <ng-sidebar
     (onClosed)="onClosedMenu()"
     [animate]="true"
@@ -37,21 +36,21 @@
 
   </ng-sidebar>
 
-  <div ng-sidebar-content>
+  <div ng-sidebar-content="">
 
     <div class="main-panel">
 
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
 
-        <!--    навигация с шапкой и списком категорий-->
-
         <app-header
+
           [categoryName]="selectedCategory ? selectedCategory.title: 'Все'"
           [showStat]="showStat"
 
           (toggleStat)="toggleStat($event)"
           (toggleMenu)="toggleMenu()"
           (settingsChanged)="settingsChanged($event)"
+
         >
 
         </app-header>

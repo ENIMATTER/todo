@@ -1,4 +1,3 @@
-
 import {Stat} from "../../../model/Stat";
 import {Observable} from "rxjs";
 

@@ -7,26 +7,24 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./about-dialog.component.css']
 })
 
-// диалоговое окно-описание программы
 export class AboutDialogComponent implements OnInit {
 
   dialogTitle: string;
   message: string;
 
   constructor(
-    private dialogRef: MatDialogRef<AboutDialogComponent>, // для работы с текущим диалог. окном
-    @Inject(MAT_DIALOG_DATA) private data: { dialogTitle: string, message: string } // данные, которые передали в диалоговое окно
+    private dialogRef: MatDialogRef<AboutDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: { dialogTitle: string, message: string }
   ) {
-    // текст для диалогового окна
-    this.dialogTitle = data.dialogTitle; // заголовок
-    this.message = data.message; // сообщение
+
+    this.dialogTitle = data.dialogTitle;
+    this.message = data.message;
   }
 
 
   ngOnInit() {
   }
 
-  // нажали ОК
   onConfirm(): void {
     this.dialogRef.close(true);
   }

@@ -5,7 +5,6 @@ import {CategorySearchValues} from "../search/SearchObjects";
 
 export interface CategoryDAO extends CommonDAO<Category> {
 
-  //поиск категорий
   findCategories(categorySearchValues: CategorySearchValues): Observable<any>;
 
 }

@@ -1,7 +1,5 @@
-<div data-intro="Статистика выполнения задач в выбранной категории" data-position='bottom' data-step="3"
-     *ngIf="showStat">
+<div data-position='bottom' *ngIf="showStat">
   <div class="row">
-
 
     <app-stat-card
       class='col-lg-3 col-md-6 col-sm-6'
@@ -22,7 +20,6 @@
     >
     </app-stat-card>
 
-
     <app-stat-card
       class='col-lg-3 col-md-6 col-sm-6 completed-card'
       title="% завершенных задач"
@@ -33,14 +30,12 @@
     >
     </app-stat-card>
 
-
     <app-stat-card
       class='col-lg-3 col-md-6 col-sm-6'
       title="% незавершенных задач"
       iconName="thumb_down"
       [count1]="getUncompletedPercent() | percent">
     </app-stat-card>
-
 
   </div>
 </div>

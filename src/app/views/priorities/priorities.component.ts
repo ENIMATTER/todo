@@ -47,7 +47,6 @@ export class PrioritiesComponent implements OnInit {
         return;
       }
 
-
       if (result.action === DialogAction.SAVE) {
         const newPriority = result.obj as Priority;
         this.addPriority.emit(newPriority);
@@ -88,7 +87,7 @@ export class PrioritiesComponent implements OnInit {
       maxWidth: '500px',
       data: {
         dialogTitle: 'Подтвердите действие',
-        message: `Вы действительно хотите удалить категорию: "${priority.title}"? (задачам проставится значение 'Без приоритета')`
+        message: `Вы действительно хотите удалить категорию: "${priority.title}"? (задачам будет проставлено значение 'Без приоритета')`
       },
       autoFocus: false
     });

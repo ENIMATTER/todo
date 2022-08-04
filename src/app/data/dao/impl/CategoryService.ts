@@ -1,4 +1,3 @@
-
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from './CommonService';

@@ -1,14 +1,13 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {DatePipe} from '@angular/common';
 
-// преобразовывает дату в нужный текстовый формат
 @Pipe({
   name: 'taskDate'
 })
 export class TaskDatePipe extends DatePipe implements PipeTransform {
 
   // @ts-ignore
-  transform(date: Date | string, format: string = 'mediumDate'): string { // mediumDate - форматирование по-умолчанию
+  transform(date: Date | string, format: string = 'mediumDate'): string {
 
     if (date == null) {
       return 'Без срока';

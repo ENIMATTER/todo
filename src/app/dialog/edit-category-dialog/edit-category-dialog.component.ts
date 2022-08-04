@@ -9,23 +9,22 @@ import {DialogAction, DialogResult} from "../../object/DialogResult";
   templateUrl: './edit-category-dialog.component.html',
   styleUrls: ['./edit-category-dialog.component.css']
 })
-// создание/редактирование категории
+
 export class EditCategoryDialogComponent implements OnInit {
 
   constructor(
-    private dialogRef: MatDialogRef<EditCategoryDialogComponent>, // для работы с текущим диалог. окном
-    @Inject(MAT_DIALOG_DATA) private data: [Category, string], // данные, которые передали в диалоговое окно
-    private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
+    private dialogRef: MatDialogRef<EditCategoryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: [Category, string],
+    private dialog: MatDialog
   ) {
   }
 
-  dialogTitle: string; // текст для диалогового окна
-  category: Category; // текст для названия категории (при реактировании или добавлении)
+  dialogTitle: string;
+  category: Category;
   canDelete: boolean = false;
 
   ngOnInit(): void {
 
-    // получаем переданные в диалоговое окно данные
     this.category = this.data[0];
     this.dialogTitle = this.data[1];
 
@@ -35,17 +34,14 @@ export class EditCategoryDialogComponent implements OnInit {
 
   }
 
-  // нажали ОК
   onConfirm(): void {
     this.dialogRef.close(new DialogResult(DialogAction.SAVE, this.category));
   }
 
-  // нажали отмену (ничего не сохраняем и закрываем окно)
   onCancel(): void {
     this.dialogRef.close(new DialogResult(DialogAction.CANCEL));
   }
 
-  // нажали Удалить
   delete(): void {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -59,7 +55,7 @@ export class EditCategoryDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (!(result)) {
-        return; // нажали удалить
+        return;
       }
 
       if(result.action === DialogAction.OK){

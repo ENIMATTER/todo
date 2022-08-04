@@ -8,8 +8,6 @@ import {MatDialog} from "@angular/material/dialog";
   styleUrls: ['./footer.component.css']
 })
 
-// "presentational component": отображает полученные данные
-// подвал - нижняя часть страницы
 export class FooterComponent implements OnInit {
   year: Date;
   siteName = 'AEFAM Site';
@@ -18,17 +16,16 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.year = new Date(); // текуший год
+    this.year = new Date();
   }
 
-  // окно "О программе"
   openAboutDialog() {
     this.dialog.open(AboutDialogComponent,
       {
         autoFocus: false,
         data: {
           dialogTitle: 'О программе',
-          message: 'Данное приложение было создано для практики Java/Spring + Angular. Отдельная благодарность моей будущей жене Анастасие, за поддержку и искреннюю любовь❤'
+          message: 'Данное приложение было создано для практики Java/Spring + Angular. Отдельная благодарность моей будущей жене Анастасии, за поддержку и искреннюю любовь❤'
         },
         width: '400px'
       });

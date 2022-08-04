@@ -1,4 +1,3 @@
-// данные для отображения дашборда сверху страницы
 export class DashboardData {
   completedTotal: number;
   uncompletedTotal: number;
