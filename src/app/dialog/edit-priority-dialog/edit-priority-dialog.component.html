@@ -1,4 +1,4 @@
-
+<!--создание/редактирование категории-->
 <mat-dialog-content>
   <p mat-dialog-title>{{dialogTitle}}</p>
 
@@ -6,20 +6,30 @@
     <mat-label>Название (20 символов)</mat-label>
     <input
       #inputTitle
-      (keydown.enter)="onConfirm()" [(ngModel)]="priorityTitle"
-      matInput
-      maxlength="20"
+
+      matInput maxlength="20"
+
+      [(ngModel)]="priority.title"
+      (keydown.enter)="confirm()"
+
     />
 
     <button
-      (click)="priorityTitle= ''"
-      *ngIf="priorityTitle.trim().length > 0"
-      aria-label="Clear" class="clear-icon size25" mat-button mat-icon-button
-      matSuffix
+      *ngIf="priority && priority.title.trim().length > 0"
+
+      class="clear-icon"
+      mat-button matSuffix mat-icon-button aria-label="Clear"
+
+      (click)="priority.title = ''"
+
     >
+
       <mat-icon>clear</mat-icon>
     </button>
   </mat-form-field>
+
+  <span [(colorPicker)]="priority.color" [style.background]="priority.color" class="color-circle"></span>
+
 </mat-dialog-content>
 
 <!--  кнопки возможных действий-->
@@ -28,22 +38,22 @@
   <div class="col-12 text-center">
 
     <button
-      (click)="onConfirm()" [disabled]="inputTitle.value.trim().length==0"
-      color="primary"
-      mat-raised-button
+      mat-raised-button color="primary"
+      (click)="confirm()"
+      [disabled]="inputTitle.value.trim().length==0"
     >
       Сохранить
     </button>
 
-    <button (click)="onCancel()" mat-raised-button>Отмена</button>
+    <button mat-raised-button (click)="cancel()">Отмена</button>
 
   </div>
 
   <div class="col-12 text-center">
 
-    <button (click)="delete()"
-            *ngIf="canDelete()"
-            class="red" mat-button
+    <button class="red"
+            mat-button
+            *ngIf="canDelete" (click)="delete()"
     >
       Удалить
     </button>

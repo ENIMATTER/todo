@@ -405,7 +405,11 @@ export class AppComponent implements OnInit {
     this.searchTasks(this.taskSearchValues); // показываем новые данные
   }
 
-
+  settingsChanged(priorities: Priority[]){
+    //this.fillAllPriorities();
+    this.priorities = priorities;
+    this.searchTasks(this.taskSearchValues);
+  }
 
   // находит индекс элемента (по id) в локальном массиве
 

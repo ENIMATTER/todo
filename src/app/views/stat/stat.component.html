@@ -6,7 +6,7 @@
     <app-stat-card
       class='col-lg-3 col-md-6 col-sm-6'
       title="Завершенные задачи"
-      iconName="done"
+      iconName="event_available"
       [count1]="getCompletedCount()"
       [count2]="getTotal()"
       [completed]="true"
@@ -16,7 +16,7 @@
     <app-stat-card
       class='col-lg-3 col-md-6 col-sm-6'
       title="Незавершенные задачи"
-      iconName="thumb_down_alt"
+      iconName="event_busy"
       [count1]="getUncompletedCount()"
       [count2]="getTotal()"
     >
@@ -26,7 +26,7 @@
     <app-stat-card
       class='col-lg-3 col-md-6 col-sm-6 completed-card'
       title="% завершенных задач"
-      iconName="poll"
+      iconName="thumb_up"
       [count1]="getCompletedPercent() | percent"
       [completed]="true"
 
@@ -37,7 +37,7 @@
     <app-stat-card
       class='col-lg-3 col-md-6 col-sm-6'
       title="% незавершенных задач"
-      iconName="thumb_down_alt"
+      iconName="thumb_down"
       [count1]="getUncompletedPercent() | percent">
     </app-stat-card>
 
