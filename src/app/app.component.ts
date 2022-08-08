@@ -63,12 +63,9 @@ export class AppComponent implements OnInit {
     this.statService.getOverallStat().subscribe((result => {
       this.stat = result;
       this.uncompletedCountForCategoryAll = this.stat.uncompletedTotal;
-
       this.fillAllCategories().subscribe(res => {
         this.categories = res;
-
         this.selectCategory(this.selectedCategory);
-
       });
     }));
 
@@ -80,25 +77,20 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.fillAllPriorities();
-
     if (!this.isMobile && !this.isTablet) {
       this.introService.startIntroJS(true);
     }
   }
 
   fillAllPriorities() {
-
     this.priorityService.findAll().subscribe(result => {
       this.priorities = result;
     });
   }
 
   fillAllCategories(): Observable<Category[]> {
-
     return this.categoryService.findAll();
-
   }
 
   fillDashData(completedCount: number, uncompletedCount: number) {
@@ -107,21 +99,15 @@ export class AppComponent implements OnInit {
   }
 
   selectCategory(category: Category) {
-
     if (category) {
       this.fillDashData(category.completedCount, category.uncompletedCount);
     } else {
       this.fillDashData(this.stat.completedTotal, this.stat.uncompletedTotal);
     }
-
     this.taskSearchValues.pageNumber = 0;
-
     this.selectedCategory = category;
-
     this.taskSearchValues.categoryId = category ? category.id : null;
-
     this.searchTasks(this.taskSearchValues);
-
     if (this.isMobile) {
       this.menuOpened = false;
     }
@@ -136,29 +122,29 @@ export class AppComponent implements OnInit {
 
   deleteCategory(category: Category) {
     this.categoryService.delete(category.id).subscribe(() => {
-      this.selectedCategory = null; // выбираем категорию "Все"
-
+      this.selectedCategory = null;
       this.searchCategory(this.categorySearchValues);
       this.selectCategory(this.selectedCategory);
-
     });
   }
 
   updateCategory(category: Category) {
     this.categoryService.update(category).subscribe(() => {
 
+      if(this.selectedCategory != category){
+        this.selectedCategory = category;
+        this.selectCategory(this.selectedCategory);
+      }
+
       this.searchCategory(this.categorySearchValues);
       this.searchTasks(this.taskSearchValues);
-
     });
   }
 
   searchCategory(categorySearchValues: CategorySearchValues) {
-
     this.categoryService.findCategories(categorySearchValues).subscribe(result => {
       this.categories = result;
     });
-
   }
 
   toggleStat(showStat: boolean) {
@@ -170,44 +156,31 @@ export class AppComponent implements OnInit {
   }
 
   searchTasks(searchTaskValues: TaskSearchValues) {
-
     this.taskSearchValues = searchTaskValues;
-
     this.taskService.findTasks(this.taskSearchValues).subscribe(result => {
-
       if (result.totalPages > 0 && this.taskSearchValues.pageNumber >= result.totalPages) {
         this.taskSearchValues.pageNumber = 0;
         this.searchTasks(this.taskSearchValues);
       }
-
       this.totalTasksFounded = result.totalElements;
       this.tasks = result.content;
     });
-
   }
 
   updateOverallCounter() {
-
-    this.statService.getOverallStat().subscribe((res => {
+    this.statService.getOverallStat().subscribe(res => {
       this.stat = res;
       this.uncompletedCountForCategoryAll = this.stat.uncompletedTotal;
-
       if (!this.selectedCategory) {
         this.fillDashData(this.stat.completedTotal, this.stat.uncompletedTotal);
       }
-
-    }));
-
+    });
   }
 
   updateCategoryCounter(category: Category) {
-
     this.categoryService.findById(category.id).subscribe(cat => {
-
       this.categories[this.getCategoryIndex(category)] = cat;
-
       this.showCategoryDashboard(cat);
-
     });
   }
 
@@ -218,51 +191,36 @@ export class AppComponent implements OnInit {
   }
 
   addTask(task: Task) {
-
     this.taskService.add(task).subscribe(() => {
-
       if (task.category) {
         this.updateCategoryCounter(task.category);
       }
       this.updateOverallCounter();
       this.searchTasks(this.taskSearchValues);
-
     });
-
   }
 
   deleteTask(task: Task) {
-
     this.taskService.delete(task.id).subscribe(() => {
-
       if (task.category) {
         this.updateCategoryCounter(task.category);
       }
-
       this.updateOverallCounter();
       this.searchTasks(this.taskSearchValues);
-
     });
   }
 
   updateTask(task: Task) {
-
     this.taskService.update(task).subscribe(() => {
-
       if (task.oldCategory) {
         this.updateCategoryCounter(task.oldCategory);
       }
-
       if (task.category) {
         this.updateCategoryCounter(task.category);
       }
-
       this.updateOverallCounter();
-
       this.searchTasks(this.taskSearchValues);
-
     });
-
   }
 
   toggleMenu() {
@@ -275,7 +233,6 @@ export class AppComponent implements OnInit {
 
   setMenuDisplayParams() {
     this.menuPosition = 'left'; // меню слева
-
     if (this.isMobile) {
       this.menuOpened = false;
       this.menuMode = 'over';
@@ -285,21 +242,16 @@ export class AppComponent implements OnInit {
       this.menuMode = 'push';
       this.showBackdrop = false;
     }
-
   }
 
   paging(pageEvent: PageEvent) {
-
     if (this.taskSearchValues.pageSize !== pageEvent.pageSize) {
       this.taskSearchValues.pageNumber = 0;
     } else {
-
       this.taskSearchValues.pageNumber = pageEvent.pageIndex;
     }
-
     this.taskSearchValues.pageSize = pageEvent.pageSize;
     this.taskSearchValues.pageNumber = pageEvent.pageIndex;
-
     this.searchTasks(this.taskSearchValues);
   }
 

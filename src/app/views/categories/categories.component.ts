@@ -99,7 +99,7 @@ export class CategoriesComponent implements OnInit {
   openEditDialog(category: Category) {
 
     const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
-      data: [new Category(category.id, category.title), 'Редактирование категории'], width: '400px'
+      data: [new Category(category.id, category.title, category.completedCount, category.uncompletedCount), 'Редактирование категории'], width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -114,7 +114,7 @@ export class CategoriesComponent implements OnInit {
       }
 
       if (result.action === DialogAction.SAVE) {
-        this.updateCategory.emit(result.obj as Category);
+        this.updateCategory.emit(result.obj);
         return;
       }
     });

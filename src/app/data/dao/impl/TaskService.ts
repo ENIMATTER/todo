@@ -17,12 +17,12 @@ export class TaskService extends CommonService<Task> implements TaskDAO {
 
 
   constructor(@Inject(TASK_URL_TOKEN) private baseUrl: any,
-              private http: HttpClient // для выполнения HTTP запросов
+              private http: HttpClient
   ) {
     super(baseUrl, http);
   }
 
-  findTasks(taskSearchValues: TaskSearchValues): Observable<any> { // из backend получаем тип Page, поэтому указываем any
+  findTasks(taskSearchValues: TaskSearchValues): Observable<any> {
     return this.http.post<any>(this.baseUrl + '/search', taskSearchValues);
   }
 

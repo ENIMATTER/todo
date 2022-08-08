@@ -9,8 +9,8 @@ export class CommonService<T> {
 
   private readonly url: string;
 
-  constructor(@Inject(String) url: string,  // базовый URL для доступа к данным
-              private httpClient: HttpClient // для выполнения HTTP запросов
+  constructor(@Inject(String) url: string,
+              private httpClient: HttpClient
   ) {
     this.url = url;
   }

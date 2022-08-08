@@ -12,16 +12,16 @@ import {DialogAction, DialogResult} from "../../object/DialogResult";
 
 export class EditCategoryDialogComponent implements OnInit {
 
+  dialogTitle: string;
+  category: Category;
+  canDelete: boolean = false;
+
   constructor(
     private dialogRef: MatDialogRef<EditCategoryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: [Category, string],
     private dialog: MatDialog
   ) {
   }
-
-  dialogTitle: string;
-  category: Category;
-  canDelete: boolean = false;
 
   ngOnInit(): void {
 

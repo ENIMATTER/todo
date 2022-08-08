@@ -13,11 +13,10 @@ export const STAT_URL_TOKEN = new InjectionToken<string>('url');
 export class StatService implements StatDAO{
 
   constructor(@Inject(STAT_URL_TOKEN) private baseUrl: any,
-              private http: HttpClient // для выполнения HTTP запросов
+              private http: HttpClient
   ) {
   }
 
-  // общая статистика
   getOverallStat(): Observable<Stat> {
     return this.http.get<Stat>(this.baseUrl);
   }
