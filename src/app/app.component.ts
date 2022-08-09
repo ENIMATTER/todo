@@ -15,6 +15,7 @@ import {PriorityService} from "./data/dao/impl/PriorityService";
 import {StatService} from "./data/dao/impl/StatService";
 import {DashboardData} from "./object/DashboardData";
 import {CookieUtils} from "./utils/CookieUtils";
+import {SpinnerService} from "./service/spinner.service";
 
 @Component({
   selector: 'app-root',
@@ -59,6 +60,8 @@ export class AppComponent implements OnInit {
   readonly cookieShowStat = 'todo: showStat';
   readonly cookieShowSearch = 'todo: showSearch';
 
+  spinner: SpinnerService;
+
   constructor(
     private taskService: TaskService,
     private categoryService: CategoryService,
@@ -66,8 +69,11 @@ export class AppComponent implements OnInit {
     private statService: StatService,
     private dialog: MatDialog,
     private introService: IntroService,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private spinnerService: SpinnerService
   ) {
+
+    this.spinner = spinnerService;
 
     this.statService.getOverallStat().subscribe((result => {
       this.stat = result;

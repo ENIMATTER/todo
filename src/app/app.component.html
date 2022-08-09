@@ -1,3 +1,5 @@
+<div class="loader" *ngIf="spinner && spinner.visibility | async"></div>
+
 <ng-sidebar-container style="height: 100vh">
 
   <ng-sidebar
@@ -18,6 +20,7 @@
     >
 
       <app-categories
+
         (selectCategory)="selectCategory($event)"
         (deleteCategory)="deleteCategory($event)"
         (updateCategory)="updateCategory($event)"
