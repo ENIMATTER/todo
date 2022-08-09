@@ -14,6 +14,7 @@ import {CategoryService} from "./data/dao/impl/CategoryService";
 import {PriorityService} from "./data/dao/impl/PriorityService";
 import {StatService} from "./data/dao/impl/StatService";
 import {DashboardData} from "./object/DashboardData";
+import {CookieUtils} from "./utils/CookieUtils";
 
 @Component({
   selector: 'app-root',
@@ -47,8 +48,16 @@ export class AppComponent implements OnInit {
 
   totalTasksFounded: number;
 
-  taskSearchValues = new TaskSearchValues();
+  taskSearchValues: TaskSearchValues;
   categorySearchValues = new CategorySearchValues();
+
+  readonly defaultPageSize = 5;
+  readonly defaultPageNumber = 0;
+
+  cookieUtils = new CookieUtils();
+  readonly cookieTaskSearchValues = 'todo: searchValues';
+  readonly cookieShowStat = 'todo: showStat';
+  readonly cookieShowSearch = 'todo: showSearch';
 
   constructor(
     private taskService: TaskService,
@@ -65,6 +74,14 @@ export class AppComponent implements OnInit {
       this.uncompletedCountForCategoryAll = this.stat.uncompletedTotal;
       this.fillAllCategories().subscribe(res => {
         this.categories = res;
+
+        if(!this.initSearchCookie()){
+          this.taskSearchValues = new TaskSearchValues();
+          this.taskSearchValues.pageSize = this.defaultPageSize;
+          this.taskSearchValues.pageNumber = this.defaultPageNumber;
+        }
+        this.initShowStatCookie();
+        this.initSearchStatCookie();
         this.selectCategory(this.selectedCategory);
       });
     }));
@@ -82,6 +99,78 @@ export class AppComponent implements OnInit {
     this.fillAllPriorities();
     if (!this.isMobile && !this.isTablet) {
       this.introService.startIntroJS(true);
+    }
+  }
+
+  initSearchCookie(): boolean {
+    const cookie = this.cookieUtils.getCookie(this.cookieTaskSearchValues);
+    if(!cookie){
+      return false;
+    }
+
+    // @ts-ignore
+    const cookieJSON = JSON.parse(cookie);
+    if(!cookieJSON){
+      return false;
+    }
+
+    if(!this.taskSearchValues){
+      this.taskSearchValues = new TaskSearchValues();
+    }
+
+    const tmpPageSize = cookieJSON.pageSize;
+    if(tmpPageSize){
+      this.taskSearchValues.pageSize = Number(tmpPageSize);
+    }
+
+    const tmpCategoryId = cookieJSON.categoryId;
+    if(tmpCategoryId){
+      this.taskSearchValues.categoryId = Number(tmpCategoryId);
+      this.selectedCategory = this.getCategoryFromArray(tmpCategoryId);
+    }
+
+    const tmpPriorityId = cookieJSON.priorityId;
+    if(tmpPriorityId){
+      this.taskSearchValues.priorityId = Number(tmpPriorityId);
+    }
+
+    const tmpTitle = cookieJSON.title;
+    if(tmpTitle){
+      this.taskSearchValues.title = tmpTitle;
+    }
+
+    const tmpCompleted = cookieJSON.completed;
+    if(tmpCompleted){
+      this.taskSearchValues.completed = tmpCompleted;
+    }
+
+    const tmpSortColumn = cookieJSON.sortColumn;
+    if(tmpSortColumn){
+      this.taskSearchValues.sortColumn = tmpSortColumn;
+    }
+
+    const tmpSortDirection = cookieJSON.sortDirection;
+    if(tmpSortDirection){
+      this.taskSearchValues.sortDirection = tmpSortDirection;
+    }
+
+    return true;
+
+  }
+
+  initShowStatCookie(){
+    const val = this.cookieUtils.getCookie(this.cookieShowSearch);
+    if(val){
+      this.showSearch = (val === 'true');
+    }
+  }
+
+  initSearchStatCookie(){
+    if(!this.isMobile && !this.isTablet){
+      const val = this.cookieUtils.getCookie(this.cookieShowStat);
+      if(val){
+        this.showStat = (val === 'true');
+      }
     }
   }
 
@@ -151,14 +240,18 @@ export class AppComponent implements OnInit {
 
   toggleStat(showStat: boolean) {
     this.showStat = showStat;
+    this.cookieUtils.setCookie(this.cookieShowStat, String(showStat));
   }
 
   toggleSearch(showSearch: boolean) {
     this.showSearch = showSearch;
+    this.cookieUtils.setCookie(this.cookieShowSearch, String(showSearch));
   }
 
   searchTasks(searchTaskValues: TaskSearchValues) {
     this.taskSearchValues = searchTaskValues;
+    this.cookieUtils.setCookie(this.cookieTaskSearchValues, JSON.stringify(this.taskSearchValues));
+
     this.taskService.findTasks(this.taskSearchValues).subscribe(result => {
       if (result.totalPages > 0 && this.taskSearchValues.pageNumber >= result.totalPages) {
         this.taskSearchValues.pageNumber = 0;
