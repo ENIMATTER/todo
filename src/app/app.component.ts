@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   isTablet: boolean;
 
   showStat = true;
-  showSearch = true;
+  showSearch: boolean;
 
   tasks: Task[];
   priorities: Priority[];
@@ -73,6 +73,8 @@ export class AppComponent implements OnInit {
     this.isTablet = deviceService.isTablet();
 
     this.setMenuDisplayParams();
+
+    this.showSearch = !(this.isMobile || this.isTablet);
 
   }
 
@@ -232,8 +234,8 @@ export class AppComponent implements OnInit {
   }
 
   setMenuDisplayParams() {
-    this.menuPosition = 'left'; // меню слева
-    if (this.isMobile) {
+    this.menuPosition = 'left';
+    if (this.isMobile || this.isTablet) {
       this.menuOpened = false;
       this.menuMode = 'over';
       this.showBackdrop = true;

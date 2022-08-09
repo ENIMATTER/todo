@@ -155,3 +155,7 @@ app-header{
   margin-bottom: 10px;
   cursor: pointer;
 }
+
+.button-left{
+  text-align: left !important;
+}

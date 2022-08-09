@@ -84,6 +84,7 @@ export class TaskListComponent implements OnInit {
   sortIconName: string;
 
   isMobile: boolean;
+  isTablet: boolean;
 
   taskSearchValues: TaskSearchValues;
 
@@ -107,6 +108,7 @@ export class TaskListComponent implements OnInit {
     private deviceService: DeviceDetectorService
   ) {
     this.isMobile = this.deviceService.isMobile();
+    this.isTablet = this.deviceService.isTablet();
   }
 
   ngOnInit() {

@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit {
   settingsChanged = new EventEmitter<Priority[]>();
 
   isMobile: boolean;
+  isTablet: boolean;
 
   constructor(
     private dialog: MatDialog,
@@ -37,6 +38,7 @@ export class HeaderComponent implements OnInit {
     private deviceService: DeviceDetectorService
   ) {
     this.isMobile = deviceService.isMobile();
+    this.isTablet = this.deviceService.isTablet();
   }
 
   ngOnInit() {

@@ -184,3 +184,7 @@ div.card-mobile p {
   width: 100%;
 }
 
+.transparent{
+  background: none;
+  border: none;
+}

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DashboardData} from '../../object/DashboardData';
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
   selector: 'app-stat',
@@ -15,7 +16,12 @@ export class StatComponent implements OnInit {
   @Input()
   showStat: boolean;
 
-  constructor() {
+  isMobile: boolean;
+  isTablet: boolean;
+
+  constructor(private deviceService: DeviceDetectorService) {
+    this.isMobile = deviceService.isMobile();
+    this.isTablet = deviceService.isTablet();
   }
 
   ngOnInit() {

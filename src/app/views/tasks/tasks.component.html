@@ -1,7 +1,9 @@
+<div class="gap20">&nbsp;</div>
+
 <div class="row" *ngIf="isMobile">
   <div class="col-md-2 col-sm-12 text-left align-middle">
-    <span class="link " (click)="onToggleSearch()" *ngIf="showSearch">Скрыть поиск</span>
-    <span class="link " (click)="onToggleSearch()" *ngIf="!showSearch">Показать поиск </span>
+    <span class="link" (click)="onToggleSearch()" *ngIf="showSearch">Скрыть поиск</span>
+    <span class="link" (click)="onToggleSearch()" *ngIf="!showSearch">Показать поиск </span>
   </div>
 </div>
 
@@ -11,6 +13,7 @@
 
     <mat-form-field>
       <input
+        autocomplete="off"
         matInput
         placeholder="Название"
         [(ngModel)]='filterTitle'
@@ -102,7 +105,7 @@
 
   </div>
 
-  <div class="col-md-4 col-sm-12" [ngClass]="{'sort': !isMobile}">
+  <div class="col-md-4 col-sm-12" [ngClass]="{'sort': !isMobile && !isTablet}">
 
     <span *ngIf="isMobile">Сортировка: </span>
 
@@ -144,16 +147,16 @@
 
       [ngClass]="{'full-width': true}"
 
-      mat-raised-button color="primary" (click)="openAddDialog()">Добавить задачу
+      mat-raised-button color="primary" (click)="openAddDialog()">Добавить
     </button>
   </div>
 
-  <div class="col-md-2 col-sm-12 text-left align-middle align-self-center" *ngIf="!isMobile">
+  <div class="col-md-2 col-sm-12 text-left align-middle align-self-center" *ngIf="!isMobile && !isTablet">
     <span class="link " (click)="onToggleSearch()" *ngIf="showSearch">Скрыть поиск</span>
     <span class="link " (click)="onToggleSearch()" *ngIf="!showSearch">Показать поиск </span>
   </div>
 
-  <div class="col-md-8  align-self-center" [ngClass]="{'founded-center': isMobile, 'text-right':!isMobile}">
+  <div class="col-md-8  align-self-center" [ngClass]="{'founded-center': isMobile || isTablet, 'text-right':!isMobile && !isTablet}">
 
     <span class="founded">
 
@@ -169,7 +172,7 @@
 
   <div class="col-md-12 task-list">
 
-    <div class="card" *ngIf="!isMobile && tasks && tasks.length > 0">
+    <div class="card" *ngIf="(!isMobile && !isTablet) && tasks && tasks.length > 0">
       <div class="card-header card-header-warning">
         <h2 class="card-title">Задачи</h2>
       </div>
@@ -194,7 +197,7 @@
             </ng-container>
 
             <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef> Название</th>
+              <th mat-header-cell *matHeaderCellDef>Название</th>
               <td class="col-title title pointer" mat-cell *matCellDef="let task" [class.completed]="task.completed"
                   (click)="openEditDialog(task)">
                 {{task.title}}
@@ -202,7 +205,7 @@
             </ng-container>
 
             <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef> Срок</th>
+              <th mat-header-cell *matHeaderCellDef>Срок</th>
               <td class="col-date" mat-cell *matCellDef="let task"
                   [ngClass]="{'completed': task.completed, 'nodate': task.date == null}">
                 {{task.date | taskDate}}
@@ -210,7 +213,7 @@
             </ng-container>
 
             <ng-container matColumnDef="priority">
-              <th mat-header-cell *matHeaderCellDef> Приоритет</th>
+              <th mat-header-cell *matHeaderCellDef>Приоритет</th>
               <td class="col-priority" mat-cell *matCellDef="let task"
                   [ngClass]="{'completed': task.completed, 'nopriority': task.priority == null}"
               >
@@ -219,7 +222,7 @@
             </ng-container>
 
             <ng-container matColumnDef="category">
-              <th mat-header-cell *matHeaderCellDef> Категория</th>
+              <th mat-header-cell *matHeaderCellDef>Категория</th>
               <td class="col-category"
                   mat-cell *matCellDef="let task"
                   [ngClass]="{'completed': task.completed, 'nocategory': task.category == null}"
@@ -271,7 +274,9 @@
 
           <mat-paginator (page)="pageChanged($event)" [pageIndex]="taskSearchValues.pageNumber"
                          [pageSize]="taskSearchValues.pageSize" [length]="totalTasksFounded"
-                         [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+                         [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons>
+
+          </mat-paginator>
 
         </div>
       </div>
@@ -284,7 +289,7 @@
       <p class="not-found"><br>Ничего не найдено</p>
     </div>
 
-    <div *ngIf="isMobile && tasks && tasks.length > 0">
+    <div *ngIf="(isMobile || isTablet) && tasks && tasks.length > 0">
       <div *ngFor="let task of tasks; let index = index; "
            [ngClass]="{'completed': task.completed}">
 
@@ -307,17 +312,15 @@
 
             <div class="col-2 align-top mobile-check">
 
-              <button mat-icon-button (click)="$event.stopPropagation(); onToggleCompleted(task)"
+              <button mat-icon-button class="button-left" (click)="$event.stopPropagation(); onToggleCompleted(task)"
                       *ngIf="!task.completed">
                 <mat-icon class="check-icon-notcompleted" (click)="$event.stopPropagation(); onToggleCompleted(task)"
-
-                >check_circle_outline
-                </mat-icon>
+                >check_circle_outline</mat-icon>
               </button>
 
-              <button mat-icon-button (click)="$event.stopPropagation(); onToggleCompleted(task)"
+              <button mat-icon-button class="button-left" (click)="$event.stopPropagation(); onToggleCompleted(task)"
                       *ngIf="task.completed">
-                <mat-icon class="check-icon-completed">check_circle</mat-icon>
+                <mat-icon class="check-icon-completed button-left">check_circle</mat-icon>
               </button>
             </div>
 
@@ -347,6 +350,12 @@
           </div>
         </div>
       </div>
+      <mat-paginator [ngClass]="{'transparent': true}"
+                     (page)="pageChanged($event)" [pageIndex]="taskSearchValues.pageNumber"
+                     [pageSize]="taskSearchValues.pageSize" [length]="totalTasksFounded"
+                     [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons>
+
+      </mat-paginator>
     </div>
   </div>
 </div>
