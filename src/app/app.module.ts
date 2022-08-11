@@ -46,24 +46,23 @@ import {CustomHttpInterceptor} from "./interceptor/http-interceptor";
 registerLocaleData(localeRu);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CategoriesComponent,
-    TaskListComponent,
-    EditTaskDialogComponent,
-    ConfirmDialogComponent,
-    TaskDatePipe,
-    EditCategoryDialogComponent,
-    FooterComponent,
-    AboutDialogComponent,
-    HeaderComponent,
-    StatComponent,
-    StatCardComponent,
-    PrioritiesComponent,
-    SettingsDialogComponent,
-    EditPriorityDialogComponent
-
-  ],
+    declarations: [
+        AppComponent,
+        CategoriesComponent,
+        TaskListComponent,
+        EditTaskDialogComponent,
+        ConfirmDialogComponent,
+        TaskDatePipe,
+        EditCategoryDialogComponent,
+        FooterComponent,
+        AboutDialogComponent,
+        HeaderComponent,
+        StatComponent,
+        StatCardComponent,
+        PrioritiesComponent,
+        SettingsDialogComponent,
+        EditPriorityDialogComponent,
+    ],
   imports: [
     BrowserModule,
     MatTableModule,

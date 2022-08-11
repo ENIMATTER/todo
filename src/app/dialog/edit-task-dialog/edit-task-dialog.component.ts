@@ -38,8 +38,8 @@ export class EditTaskDialogComponent implements OnInit {
 
   oldCategoryId: number;
 
-  canDelete = true;
-  canComplete = true;
+  canDelete = false;
+  canComplete = false;
 
   today = new Date();
 

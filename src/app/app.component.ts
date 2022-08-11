@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog,
     private introService: IntroService,
     private deviceService: DeviceDetectorService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
   ) {
 
     this.spinner = spinnerService;

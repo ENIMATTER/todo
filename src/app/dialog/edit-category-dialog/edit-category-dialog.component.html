@@ -43,7 +43,7 @@
   <div class="col-12 text-center padding_0">
     <button
       mat-button
-      (click)="delete()" class="red">
+      *ngIf="canDelete" (click)="delete()" class="red">
       Удалить
     </button>
   </div>
